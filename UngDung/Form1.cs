@@ -56,6 +56,9 @@ namespace UngDung
             //    MessageBox.Show("Đăng ký thành công!");
             //}
 
+
+            // giả sử thêm mới
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
