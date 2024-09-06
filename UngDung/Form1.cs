@@ -90,7 +90,7 @@ namespace UngDung
                 {
                     connection.Close();
                 }
-
+                MessageBox.Show("Bạn đã đăng ký thành công!", "Thông Báo", MessageBoxButtons.OK);
             }
         }
 
@@ -105,8 +105,18 @@ namespace UngDung
 
         private void btn_dk_dangnhap_Click(object sender, EventArgs e)
         {
-            DangNhap_sql loginForm = new DangNhap_sql();
-            loginForm.ShowDialog();
+            try
+            {
+                Form1 form1 = this;
+                form1.Hide();
+                ChonServer chonsv = new ChonServer();
+                chonsv.ShowDialog();
+                form1.Close();
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 

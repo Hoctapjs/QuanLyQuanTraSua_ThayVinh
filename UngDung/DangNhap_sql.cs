@@ -23,16 +23,31 @@ namespace UngDung
 
         }
 
+        public string ip;
+        public bool ip_con;
+
         private void btn_dangnhap_Click(object sender, EventArgs e)
         {
             string username = txt_usernamesql.Text;
             string password = txt_passwordsql.Text;
 
             // Cấu hình chuỗi kết nối
-            string connectionString = $@"
+            string connectionString;
+            if (ip_con == true)
+            {
+                connectionString = $@"
+                Data Source={ip}\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;
+                User ID={username}; 
+                Password={password};";
+            }
+            else
+            {
+                connectionString = $@"
                 Data Source=LAPTOP-2IRIHD28\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;
                 User ID={username}; 
                 Password={password};";
+            }
+            
 
             try
             {
@@ -44,6 +59,7 @@ namespace UngDung
                     DangNhap_sql dn = this;
                     dn.Hide();
                     Home homeForm = new Home();
+                    homeForm.connect = connectionString;
                     homeForm.ShowDialog();
                     dn.Close();
                 }

@@ -22,7 +22,7 @@ namespace UngDung
         {
             Main main = this;
             main.Hide();
-            DangNhap_sql loginForm = new DangNhap_sql();
+            ChonServer loginForm = new ChonServer();
             loginForm.ShowDialog();
             main.Close();
         }

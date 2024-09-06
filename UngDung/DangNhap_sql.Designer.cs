@@ -68,6 +68,7 @@
             this.txt_passwordsql.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txt_passwordsql.Location = new System.Drawing.Point(189, 108);
             this.txt_passwordsql.Name = "txt_passwordsql";
+            this.txt_passwordsql.PasswordChar = '*';
             this.txt_passwordsql.Size = new System.Drawing.Size(409, 41);
             this.txt_passwordsql.TabIndex = 3;
             // 
