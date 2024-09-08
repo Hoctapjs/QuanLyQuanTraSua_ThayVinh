@@ -34,11 +34,12 @@
             this.btn_nhanvien = new System.Windows.Forms.Button();
             this.btn_khach = new System.Windows.Forms.Button();
             this.btn_hoadon = new System.Windows.Forms.Button();
+            this.btn_chitietdh = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btn_chitietdh = new System.Windows.Forms.Button();
+            this.lbl_username = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -126,6 +127,20 @@
             this.btn_hoadon.UseVisualStyleBackColor = false;
             this.btn_hoadon.Click += new System.EventHandler(this.btn_hoadon_Click);
             // 
+            // btn_chitietdh
+            // 
+            this.btn_chitietdh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_chitietdh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_chitietdh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_chitietdh.ForeColor = System.Drawing.Color.White;
+            this.btn_chitietdh.Location = new System.Drawing.Point(3, 231);
+            this.btn_chitietdh.Name = "btn_chitietdh";
+            this.btn_chitietdh.Size = new System.Drawing.Size(234, 51);
+            this.btn_chitietdh.TabIndex = 10;
+            this.btn_chitietdh.Text = "Chi Tiết DH";
+            this.btn_chitietdh.UseVisualStyleBackColor = false;
+            this.btn_chitietdh.Click += new System.EventHandler(this.btn_chitietdh_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Turquoise;
@@ -156,6 +171,7 @@
             this.panel2.BackColor = System.Drawing.Color.LightGreen;
             this.panel2.BackgroundImage = global::UngDung.Properties.Resources.Layer_11;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel2.Controls.Add(this.lbl_username);
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -178,19 +194,15 @@
             this.dataGridView1.Size = new System.Drawing.Size(787, 473);
             this.dataGridView1.TabIndex = 0;
             // 
-            // btn_chitietdh
+            // lbl_username
             // 
-            this.btn_chitietdh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_chitietdh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
-            this.btn_chitietdh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_chitietdh.ForeColor = System.Drawing.Color.White;
-            this.btn_chitietdh.Location = new System.Drawing.Point(3, 231);
-            this.btn_chitietdh.Name = "btn_chitietdh";
-            this.btn_chitietdh.Size = new System.Drawing.Size(234, 51);
-            this.btn_chitietdh.TabIndex = 10;
-            this.btn_chitietdh.Text = "Chi Tiết DH";
-            this.btn_chitietdh.UseVisualStyleBackColor = false;
-            this.btn_chitietdh.Click += new System.EventHandler(this.btn_chitietdh_Click);
+            this.lbl_username.AutoSize = true;
+            this.lbl_username.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lbl_username.Location = new System.Drawing.Point(20, 12);
+            this.lbl_username.Name = "lbl_username";
+            this.lbl_username.Size = new System.Drawing.Size(65, 28);
+            this.lbl_username.TabIndex = 2;
+            this.lbl_username.Text = "label1";
             // 
             // Home
             // 
@@ -207,6 +219,7 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -225,5 +238,6 @@
         private Button btn_hoadon;
         private DataGridView dataGridView1;
         private Button btn_chitietdh;
+        private Label lbl_username;
     }
 }

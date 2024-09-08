@@ -19,10 +19,11 @@ namespace UngDung
         }
 
         public string connect;
+        public string username;
 
         private void Home_Load(object sender, EventArgs e)
         {
-
+            lbl_username.Text = username;
         }
 
         private void btn_khach_Click(object sender, EventArgs e)

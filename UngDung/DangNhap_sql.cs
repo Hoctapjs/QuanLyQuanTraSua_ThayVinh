@@ -60,13 +60,14 @@ namespace UngDung
                     dn.Hide();
                     Home homeForm = new Home();
                     homeForm.connect = connectionString;
+                    homeForm.username = username;
                     homeForm.ShowDialog();
                     dn.Close();
                 }
             }
             catch (SqlException ex)
             {
-                MessageBox.Show($"Lỗi đăng nhập: {ex.Message}");
+                MessageBox.Show($"Lỗi đăng nhập");
             }
         }
     }
