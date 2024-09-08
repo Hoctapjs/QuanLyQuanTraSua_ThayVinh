@@ -44,7 +44,7 @@ namespace UngDung
             }
             catch (SqlException ex)
             {
-                MessageBox.Show($"Lỗi đăng nhập");
+                MessageBox.Show($"Lỗi quay lại");
             }
         }
 
@@ -200,6 +200,47 @@ namespace UngDung
                 workbook.SaveAs($@"{ex_path}\{database_name}.xlsx");
             }
             MessageBox.Show($"Đã xuất tất cả các bảng vào file {database_name}.xlsx");
+        }
+
+        private void btn_submit_export_Click_1(object sender, EventArgs e)
+        {
+            string connectionString = connect;
+            string ex_path = "";
+
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Lấy đường dẫn thư mục đã chọn
+                    ex_path = folderBrowserDialog.SelectedPath;
+                }
+            }
+
+
+
+            string table = cbo_danhsach_table.Text;
+
+            //string path = @"{ex_path}\{table}.xlsx";
+
+
+            string query = $@"SELECT * FROM {table}";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                using (XLWorkbook workbook = new XLWorkbook())
+                {
+
+                    workbook.Worksheets.Add(dataTable, table);
+                    // Lưu file tại vị trí cụ thể
+                    workbook.SaveAs($@"{ex_path}\{table}.xlsx");
+                }
+            }
+
+            MessageBox.Show($"Dữ liệu đã được xuất ra file {table}.xlsx");
         }
     }
 }

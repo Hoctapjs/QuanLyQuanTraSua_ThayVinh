@@ -171,6 +171,7 @@
             this.btn_import.TabIndex = 12;
             this.btn_import.Text = "Import from XLS";
             this.btn_import.UseVisualStyleBackColor = false;
+            this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
             // 
             // pictureBox1
             // 

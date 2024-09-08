@@ -176,5 +176,31 @@ namespace UngDung
 
             
         }
+
+        private void btn_import_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Visible = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    connection.Open();
+                    MessageBox.Show("Bắt đầu thực hiện import!");
+                    // Mở form chính hoặc thực hiện hành động khác sau khi đăng nhập thành công
+                    Home ho = this;
+                    ho.Hide();
+                    import im = new import();
+                    im.connect = connect;
+                    im.username = username;
+                    im.ShowDialog();
+                    ho.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
+        }
     }
 }
