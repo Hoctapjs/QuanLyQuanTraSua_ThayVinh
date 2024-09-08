@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 
 namespace UngDung
 {
@@ -23,7 +24,14 @@ namespace UngDung
 
         private void Home_Load(object sender, EventArgs e)
         {
+            btn_export.Enabled = false;
+            btn_import.Enabled = false;
             lbl_username.Text = username;
+            if (username == "sa")
+            {
+                btn_export.Enabled = true;
+                btn_import.Enabled = true;
+            }
         }
 
         private void btn_khach_Click(object sender, EventArgs e)
@@ -139,6 +147,34 @@ namespace UngDung
                     MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
                 }
             }
+        }
+
+        private void btn_export_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Visible = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    connection.Open();
+                    MessageBox.Show("Bắt đầu thực hiện export!");
+                    // Mở form chính hoặc thực hiện hành động khác sau khi đăng nhập thành công
+                    Home ho = this;
+                    ho.Hide();
+                    export ex = new export();
+                    ex.connect = connect;
+                    ex.username = username;
+                    ex.ShowDialog();
+                    ho.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
+
+            
         }
     }
 }
