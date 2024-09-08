@@ -22,6 +22,7 @@ namespace UngDung
 
         public string connect;
         public string username;
+        List<string> rowsList;
 
         private void btn_thoat_Click(object sender, EventArgs e)
         {
@@ -69,7 +70,7 @@ namespace UngDung
                 adapter.Fill(dataTable);
 
                 // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
-                List<string> rowsList = new List<string>();
+                rowsList = new List<string>();
 
                 // Duyệt qua các hàng trong DataTable
                 foreach (DataRow row in dataTable.Rows)
@@ -121,8 +122,23 @@ namespace UngDung
             //}
 
             string connectionString = connect;
+            string ex_path = "";
+
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Lấy đường dẫn thư mục đã chọn
+                    ex_path = folderBrowserDialog.SelectedPath;
+                }
+            }
+
+
 
             string table = cbo_danhsach_table.Text;
+
+            //string path = @"{ex_path}\{table}.xlsx";
+
 
             string query = $@"SELECT * FROM {table}";
 
@@ -134,13 +150,56 @@ namespace UngDung
 
                 using (XLWorkbook workbook = new XLWorkbook())
                 {
+
                     workbook.Worksheets.Add(dataTable, table);
                     // Lưu file tại vị trí cụ thể
-                    workbook.SaveAs(@"D:\chua file xlsx\output.xlsx");
+                    workbook.SaveAs($@"{ex_path}\{table}.xlsx");
                 }
             }
 
-            MessageBox.Show("Dữ liệu đã được xuất ra file output.xlsx");
+            MessageBox.Show($"Dữ liệu đã được xuất ra file {table}.xlsx");
+        }
+
+        private void btn_submit_export_all_Click(object sender, EventArgs e)
+        {
+            string connectionString = connect;
+            string ex_path = "";
+            string database_name = "QuanLyTraSuaDB2";
+
+
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Lấy đường dẫn thư mục đã chọn
+                    ex_path = folderBrowserDialog.SelectedPath;
+                }
+            }
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                foreach (var table in rowsList)
+                {
+                    string table_name = table;
+
+                    //string path = @"{ex_path}\{table}.xlsx";
+
+
+                    string query = $@"SELECT * FROM {table_name}";
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+
+                        workbook.Worksheets.Add(dataTable, table_name);
+                        // Lưu file tại vị trí cụ thể
+                    }
+                }
+                workbook.SaveAs($@"{ex_path}\{database_name}.xlsx");
+            }
+            MessageBox.Show($"Đã xuất tất cả các bảng vào file {database_name}.xlsx");
         }
     }
 }
