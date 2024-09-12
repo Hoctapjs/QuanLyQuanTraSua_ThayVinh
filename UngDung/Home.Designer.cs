@@ -37,6 +37,11 @@
             this.btn_chitietdh = new System.Windows.Forms.Button();
             this.btn_export = new System.Windows.Forms.Button();
             this.btn_import = new System.Windows.Forms.Button();
+            this.btn_them = new System.Windows.Forms.Button();
+            this.btn_xoa = new System.Windows.Forms.Button();
+            this.btn_sua = new System.Windows.Forms.Button();
+            this.btn_user_id = new System.Windows.Forms.Button();
+            this.btn_phien = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -58,7 +63,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(827, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(270, 631);
+            this.panel1.Size = new System.Drawing.Size(270, 953);
             this.panel1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -70,9 +75,14 @@
             this.flowLayoutPanel1.Controls.Add(this.btn_chitietdh);
             this.flowLayoutPanel1.Controls.Add(this.btn_export);
             this.flowLayoutPanel1.Controls.Add(this.btn_import);
+            this.flowLayoutPanel1.Controls.Add(this.btn_them);
+            this.flowLayoutPanel1.Controls.Add(this.btn_xoa);
+            this.flowLayoutPanel1.Controls.Add(this.btn_sua);
+            this.flowLayoutPanel1.Controls.Add(this.btn_user_id);
+            this.flowLayoutPanel1.Controls.Add(this.btn_phien);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(17, 124);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(237, 407);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(237, 750);
             this.flowLayoutPanel1.TabIndex = 6;
             // 
             // btn_sanpham
@@ -173,6 +183,68 @@
             this.btn_import.UseVisualStyleBackColor = false;
             this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
             // 
+            // btn_them
+            // 
+            this.btn_them.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_them.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_them.ForeColor = System.Drawing.Color.White;
+            this.btn_them.Location = new System.Drawing.Point(3, 402);
+            this.btn_them.Name = "btn_them";
+            this.btn_them.Size = new System.Drawing.Size(234, 51);
+            this.btn_them.TabIndex = 13;
+            this.btn_them.Text = "Thêm";
+            this.btn_them.UseVisualStyleBackColor = false;
+            // 
+            // btn_xoa
+            // 
+            this.btn_xoa.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_xoa.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_xoa.ForeColor = System.Drawing.Color.White;
+            this.btn_xoa.Location = new System.Drawing.Point(3, 459);
+            this.btn_xoa.Name = "btn_xoa";
+            this.btn_xoa.Size = new System.Drawing.Size(234, 51);
+            this.btn_xoa.TabIndex = 14;
+            this.btn_xoa.Text = "Xóa";
+            this.btn_xoa.UseVisualStyleBackColor = false;
+            // 
+            // btn_sua
+            // 
+            this.btn_sua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_sua.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_sua.ForeColor = System.Drawing.Color.White;
+            this.btn_sua.Location = new System.Drawing.Point(3, 516);
+            this.btn_sua.Name = "btn_sua";
+            this.btn_sua.Size = new System.Drawing.Size(234, 51);
+            this.btn_sua.TabIndex = 15;
+            this.btn_sua.Text = "Sửa";
+            this.btn_sua.UseVisualStyleBackColor = false;
+            // 
+            // btn_user_id
+            // 
+            this.btn_user_id.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_user_id.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_user_id.ForeColor = System.Drawing.Color.White;
+            this.btn_user_id.Location = new System.Drawing.Point(3, 573);
+            this.btn_user_id.Name = "btn_user_id";
+            this.btn_user_id.Size = new System.Drawing.Size(234, 51);
+            this.btn_user_id.TabIndex = 16;
+            this.btn_user_id.Text = "User_id";
+            this.btn_user_id.UseVisualStyleBackColor = false;
+            this.btn_user_id.Click += new System.EventHandler(this.btn_user_id_Click);
+            // 
+            // btn_phien
+            // 
+            this.btn_phien.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_phien.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_phien.ForeColor = System.Drawing.Color.White;
+            this.btn_phien.Location = new System.Drawing.Point(3, 630);
+            this.btn_phien.Name = "btn_phien";
+            this.btn_phien.Size = new System.Drawing.Size(234, 51);
+            this.btn_phien.TabIndex = 17;
+            this.btn_phien.Text = "Phiên";
+            this.btn_phien.UseVisualStyleBackColor = false;
+            this.btn_phien.Click += new System.EventHandler(this.btn_phien_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Turquoise;
@@ -190,11 +262,11 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
             this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(17, 568);
+            this.button1.Location = new System.Drawing.Point(17, 890);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(237, 51);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Thoát";
+            this.button1.Text = "Đăng xuất";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -208,7 +280,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(827, 631);
+            this.panel2.Size = new System.Drawing.Size(827, 953);
             this.panel2.TabIndex = 1;
             // 
             // lbl_username
@@ -233,14 +305,14 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 29;
-            this.dataGridView1.Size = new System.Drawing.Size(787, 473);
+            this.dataGridView1.Size = new System.Drawing.Size(787, 795);
             this.dataGridView1.TabIndex = 0;
             // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1097, 631);
+            this.ClientSize = new System.Drawing.Size(1097, 953);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Home";
@@ -272,5 +344,10 @@
         private Label lbl_username;
         private Button btn_export;
         private Button btn_import;
+        private Button btn_them;
+        private Button btn_xoa;
+        private Button btn_sua;
+        private Button btn_user_id;
+        private Button btn_phien;
     }
 }
