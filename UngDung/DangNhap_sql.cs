@@ -77,7 +77,7 @@ namespace UngDung
             }
             catch (SqlException ex)
             {
-                MessageBox.Show($"Lỗi đăng nhập");
+                MessageBox.Show($"Lỗi đăng nhập: {ex}");
             }
         }
 
@@ -111,24 +111,73 @@ namespace UngDung
             }
         }
 
+        //public void Login(string userId, string connectionString1)
+        //{
+        //    string connectionString = connectionString1;
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+        //        string sessionId = Guid.NewGuid().ToString();
+        //        string query = "INSERT INTO UserSessions (SessionID, UserID, LoginTime, IsLoggedIn) VALUES (@SessionID, @UserID, @LoginTime, @IsLoggedIn)";
+        //        using (SqlCommand command = new SqlCommand(query, connection))
+        //        {
+        //            command.Parameters.AddWithValue("@SessionID", sessionId);
+        //            command.Parameters.AddWithValue("@UserID", userId);
+        //            command.Parameters.AddWithValue("@LoginTime", DateTime.Now);
+        //            command.Parameters.AddWithValue("@IsLoggedIn", true);
+        //            command.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
+
         public void Login(string userId, string connectionString1)
         {
-            string connectionString = connectionString1;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString1))
             {
                 connection.Open();
-                string sessionId = Guid.NewGuid().ToString();
-                string query = "INSERT INTO UserSessions (SessionID, UserID, LoginTime, IsLoggedIn) VALUES (@SessionID, @UserID, @LoginTime, @IsLoggedIn)";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                string checkQuery = "SELECT COUNT(*) FROM UserSessions WHERE UserID = @UserID";
+                using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@SessionID", sessionId);
-                    command.Parameters.AddWithValue("@UserID", userId);
-                    command.Parameters.AddWithValue("@LoginTime", DateTime.Now);
-                    command.Parameters.AddWithValue("@IsLoggedIn", true);
-                    command.ExecuteNonQuery();
+                    checkCommand.Parameters.AddWithValue("@UserID", userId);
+                    int count = (int)checkCommand.ExecuteScalar();
+
+                    if (count > 0)
+                    {
+                        // Update existing record
+                        string updateQuery = "UPDATE UserSessions SET IsLoggedIn = @IsLoggedIn WHERE UserID = @UserID";
+                        using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@IsLoggedIn", true);
+                            updateCommand.Parameters.AddWithValue("@UserID", userId);
+                            updateCommand.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        // Insert new record
+                        //string insertQuery = "INSERT INTO UserSessions (UserID, IsLoggedIn) VALUES (@UserID, @IsLoggedIn)";
+                        //using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection))
+                        //{
+                        //    insertCommand.Parameters.AddWithValue("@UserID", userId);
+                        //    insertCommand.Parameters.AddWithValue("@IsLoggedIn", true);
+                        //    insertCommand.ExecuteNonQuery();
+                        //}
+
+                        string sessionId = Guid.NewGuid().ToString();
+                        string query = "INSERT INTO UserSessions (SessionID, UserID, LoginTime, IsLoggedIn) VALUES (@SessionID, @UserID, @LoginTime, @IsLoggedIn)";
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@SessionID", sessionId);
+                            command.Parameters.AddWithValue("@UserID", userId);
+                            command.Parameters.AddWithValue("@LoginTime", DateTime.Now);
+                            command.Parameters.AddWithValue("@IsLoggedIn", true);
+                            command.ExecuteNonQuery();
+                        }
+                    }
                 }
             }
         }
+
 
         public void Logout(string userId, string connectionString1)
         {
