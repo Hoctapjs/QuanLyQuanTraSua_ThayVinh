@@ -18,11 +18,47 @@ namespace UngDung
         public Home()
         {
             InitializeComponent();
+            RegisterFormClosedEvent();
+
 
             //userid = GetUserID(username, connect);
 
 
-            
+
+        }
+
+        private void RegisterFormClosedEvent()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form != this)
+                {
+                    form.FormClosed += new FormClosedEventHandler(Home_FormClosed);
+                }
+            }
+        }
+
+        private bool AreAllFormsClosed()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form != this && form.Visible)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void Home_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (AreAllFormsClosed())
+            {
+                // Hiển thị form mong muốn khi tất cả các form khác đã đóng
+                Main main = new Main();
+                main.ShowDialog();
+
+            }
         }
 
         public string connect;
@@ -398,6 +434,8 @@ namespace UngDung
                 }
             }
         }
+
+
     }
 }
 
