@@ -51,7 +51,10 @@
             this.btn_them = new System.Windows.Forms.Button();
             this.btn_xoa = new System.Windows.Forms.Button();
             this.btn_sua = new System.Windows.Forms.Button();
+            this.btn_mon_chuadathang = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txt_makhachhang = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -63,13 +66,14 @@
             // panel1
             // 
             this.panel1.BackgroundImage = global::UngDung.Properties.Resources.Layer_11;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.lbl_username);
             this.panel1.Controls.Add(this.dataGridView1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1097, 853);
+            this.panel1.Size = new System.Drawing.Size(1097, 1053);
             this.panel1.TabIndex = 0;
             // 
             // groupBox1
@@ -77,6 +81,8 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.txt_makhachhang);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.txt_sanpham_sua);
             this.groupBox1.Controls.Add(this.btn_sanpham_tim);
@@ -91,7 +97,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupBox1.Location = new System.Drawing.Point(24, 62);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(787, 326);
+            this.groupBox1.Size = new System.Drawing.Size(787, 420);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Sản phẩm";
@@ -123,6 +129,7 @@
             this.btn_sanpham_tim.TabIndex = 9;
             this.btn_sanpham_tim.Text = "Tìm";
             this.btn_sanpham_tim.UseVisualStyleBackColor = false;
+            this.btn_sanpham_tim.Click += new System.EventHandler(this.btn_sanpham_tim_Click);
             // 
             // label4
             // 
@@ -207,11 +214,11 @@
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(24, 412);
+            this.dataGridView1.Location = new System.Drawing.Point(24, 512);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 29;
-            this.dataGridView1.Size = new System.Drawing.Size(787, 416);
+            this.dataGridView1.Size = new System.Drawing.Size(787, 516);
             this.dataGridView1.TabIndex = 1;
             // 
             // panel2
@@ -222,7 +229,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel2.Location = new System.Drawing.Point(827, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(270, 853);
+            this.panel2.Size = new System.Drawing.Size(270, 1053);
             this.panel2.TabIndex = 1;
             // 
             // btn_thoat
@@ -244,6 +251,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btn_them);
             this.flowLayoutPanel1.Controls.Add(this.btn_xoa);
             this.flowLayoutPanel1.Controls.Add(this.btn_sua);
+            this.flowLayoutPanel1.Controls.Add(this.btn_mon_chuadathang);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(21, 133);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(237, 624);
@@ -261,6 +269,7 @@
             this.btn_sanpham.TabIndex = 9;
             this.btn_sanpham.Text = "Sản Phẩm";
             this.btn_sanpham.UseVisualStyleBackColor = false;
+            this.btn_sanpham.Click += new System.EventHandler(this.btn_sanpham_Click);
             // 
             // btn_them
             // 
@@ -301,6 +310,19 @@
             this.btn_sua.UseVisualStyleBackColor = false;
             this.btn_sua.Click += new System.EventHandler(this.btn_sua_Click);
             // 
+            // btn_mon_chuadathang
+            // 
+            this.btn_mon_chuadathang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_mon_chuadathang.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_mon_chuadathang.ForeColor = System.Drawing.Color.White;
+            this.btn_mon_chuadathang.Location = new System.Drawing.Point(3, 231);
+            this.btn_mon_chuadathang.Name = "btn_mon_chuadathang";
+            this.btn_mon_chuadathang.Size = new System.Drawing.Size(234, 51);
+            this.btn_mon_chuadathang.TabIndex = 16;
+            this.btn_mon_chuadathang.Text = "Món Chưa Đặt Hàng";
+            this.btn_mon_chuadathang.UseVisualStyleBackColor = false;
+            this.btn_mon_chuadathang.Click += new System.EventHandler(this.btn_mon_chuadathang_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Turquoise;
@@ -312,11 +334,27 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(30, 313);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(226, 28);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Tìm theo mã khách hàng";
+            // 
+            // txt_makhachhang
+            // 
+            this.txt_makhachhang.Location = new System.Drawing.Point(30, 353);
+            this.txt_makhachhang.Name = "txt_makhachhang";
+            this.txt_makhachhang.Size = new System.Drawing.Size(348, 34);
+            this.txt_makhachhang.TabIndex = 12;
+            // 
             // sanpham
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1097, 853);
+            this.ClientSize = new System.Drawing.Size(1097, 1053);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -360,5 +398,8 @@
         private TextBox txt_sanpham_ma;
         private Label label5;
         private TextBox txt_sanpham_sua;
+        private Button btn_mon_chuadathang;
+        private Label label6;
+        private TextBox txt_makhachhang;
     }
 }

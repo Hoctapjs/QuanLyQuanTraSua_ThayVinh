@@ -52,6 +52,7 @@
             this.btn_xoa = new System.Windows.Forms.Button();
             this.btn_sua = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btn_timdon = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -249,6 +250,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btn_them);
             this.flowLayoutPanel1.Controls.Add(this.btn_xoa);
             this.flowLayoutPanel1.Controls.Add(this.btn_sua);
+            this.flowLayoutPanel1.Controls.Add(this.btn_timdon);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(21, 133);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(237, 624);
@@ -317,6 +319,19 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
+            // btn_timdon
+            // 
+            this.btn_timdon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_timdon.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_timdon.ForeColor = System.Drawing.Color.White;
+            this.btn_timdon.Location = new System.Drawing.Point(3, 231);
+            this.btn_timdon.Name = "btn_timdon";
+            this.btn_timdon.Size = new System.Drawing.Size(234, 51);
+            this.btn_timdon.TabIndex = 16;
+            this.btn_timdon.Text = "Tìm Đơn Từ Mã Khách";
+            this.btn_timdon.UseVisualStyleBackColor = false;
+            this.btn_timdon.Click += new System.EventHandler(this.btn_timdon_Click);
+            // 
             // KhachHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -365,5 +380,6 @@
         private Panel panel1;
         private Label label6;
         private TextBox txt_makhachhangsua;
+        private Button btn_timdon;
     }
 }

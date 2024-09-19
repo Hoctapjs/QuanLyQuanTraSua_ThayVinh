@@ -330,5 +330,205 @@ namespace UngDung
                 MessageBox.Show($"Lỗi quay lại");
             }
         }
+
+        private void btn_sanpham_tim_Click(object sender, EventArgs e)
+        {
+            string masp = txt_sanpham_ma.Text.Trim();
+            string tensp = txt_sanpham_ten.Text.Trim();
+            string giatien = txt_sanpham_giatien.Text.Trim();
+            string trangthai = txt_sanpham_trangthai.Text.Trim();
+            string makh = txt_makhachhang.Text.Trim();
+
+            //foreach (var row in rowsList)
+            //{
+            //    //cbo_danhsach_table.Items.Add(row);
+            //    if (masp == row)
+            //    {
+            //        MessageBox.Show($"Đã tồn tại sản phẩm có mã: {masp}", "Thông báo");
+            //        txt_sanpham_ma.Clear();
+            //        txt_sanpham_ten.Clear();
+            //        txt_sanpham_giatien.Clear();
+            //        txt_sanpham_trangthai.Clear();
+            //        return;
+            //    }
+            //}
+
+
+            if (masp.Length == 0 && tensp.Length != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = $"SELECT * FROM SANPHAM WHERE TENSP = N'{tensp}';";
+
+                        SqlCommand command = new SqlCommand(query, connection);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi {ex}");
+                    }
+                }
+
+                //using (SqlConnection connection = new SqlConnection(connect))
+                //{
+                //    try
+                //    {
+                //        connection.Open();
+                //        string query = "SELECT * FROM SANPHAM";
+                //        SqlCommand command = new SqlCommand(query, connection);
+                //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                //        DataTable dataTable = new DataTable();
+                //        adapter.Fill(dataTable);
+
+                //        dataGridView1.DataSource = dataTable;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                //    }
+                //}
+            }
+
+            if (tensp.Length == 0 && masp.Length != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = $"SELECT * FROM SANPHAM WHERE MASP = '{masp}';";
+
+                        SqlCommand command = new SqlCommand(query, connection);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi {ex}");
+                    }
+                }
+
+                //using (SqlConnection connection = new SqlConnection(connect))
+                //{
+                //    try
+                //    {
+                //        connection.Open();
+                //        string query = "SELECT * FROM SANPHAM";
+                //        SqlCommand command = new SqlCommand(query, connection);
+                //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                //        DataTable dataTable = new DataTable();
+                //        adapter.Fill(dataTable);
+
+                //        dataGridView1.DataSource = dataTable;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                //    }
+                //}
+            }
+
+            if (makh.Length != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = $"SELECT * FROM DONHANG dh WHERE dh.MADH IN ( SELECT DONHANG.MADH FROM DONHANG JOIN KHACH k ON k.MAKH = DONHANG.MAKH WHERE k.MAKH IN ('{makh}') )";
+
+                        SqlCommand command = new SqlCommand(query, connection);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi {ex}");
+                    }
+                }
+
+                //using (SqlConnection connection = new SqlConnection(connect))
+                //{
+                //    try
+                //    {
+                //        connection.Open();
+                //        string query = "SELECT * FROM SANPHAM";
+                //        SqlCommand command = new SqlCommand(query, connection);
+                //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                //        DataTable dataTable = new DataTable();
+                //        adapter.Fill(dataTable);
+
+                //        dataGridView1.DataSource = dataTable;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                //    }
+                //}
+            }
+
+
+            txt_sanpham_ma.Clear();
+            txt_sanpham_ten.Clear();
+            txt_sanpham_giatien.Clear();
+            txt_sanpham_trangthai.Clear();
+        }
+
+        private void btn_sanpham_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM SANPHAM";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                }
+            }
+        }
+
+        private void btn_mon_chuadathang_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "select s.MASP, s.TENSP from SANPHAM s where s.MASP not in (select distinct c.MASP from CHITIETDONHANG c)";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                }
+            }
+        }
     }
 }

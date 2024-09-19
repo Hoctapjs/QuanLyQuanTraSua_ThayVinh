@@ -345,5 +345,51 @@ namespace UngDung
                 MessageBox.Show($"Lỗi đăng nhập");
             }
         }
+
+        private void btn_timdon_Click(object sender, EventArgs e)
+        {
+            string makh = txt_ma.Text;
+            if (makh.Length != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = $"SELECT * FROM DONHANG dh WHERE dh.MADH IN ( SELECT DONHANG.MADH FROM DONHANG JOIN KHACH k ON k.MAKH = DONHANG.MAKH WHERE k.MAKH IN ('{makh}') )";
+
+                        SqlCommand command = new SqlCommand(query, connection);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi {ex}");
+                    }
+                }
+
+                //using (SqlConnection connection = new SqlConnection(connect))
+                //{
+                //    try
+                //    {
+                //        connection.Open();
+                //        string query = "SELECT * FROM SANPHAM";
+                //        SqlCommand command = new SqlCommand(query, connection);
+                //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                //        DataTable dataTable = new DataTable();
+                //        adapter.Fill(dataTable);
+
+                //        dataGridView1.DataSource = dataTable;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                //    }
+                //}
+            }
+        }
     }
 }
