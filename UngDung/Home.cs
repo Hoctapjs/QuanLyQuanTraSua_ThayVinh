@@ -118,18 +118,24 @@ namespace UngDung
 
         private void Home_Load(object sender, EventArgs e)
         {
-            btn_export.Enabled = false;
-            btn_import.Enabled = false;
+            btn_export.Visible = false;
+            btn_import.Visible = false;
+            btn_capnhat_view.Visible = false;
+            btn_user_id.Visible = false;
+            btn_phien.Visible = false;
             lbl_username.Text = username;
             if (username == "sa")
             {
-                btn_export.Enabled = true;
-                btn_import.Enabled = true;
+                btn_export.Visible = true;
+                btn_import.Visible = true;
+                btn_capnhat_view.Visible = true;
+                btn_user_id.Visible = true;
+                btn_phien.Visible = true;
             }
 
             userid = GetUserID(username, connect);
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 20000;
+            timer.Interval = 10000;
 
             // Gán sự kiện Tick cho Timer
             timer.Tick += Timer_Tick;
@@ -142,23 +148,24 @@ namespace UngDung
 
         private void btn_khach_Click(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connect))
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(connect))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM KHACH";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    dataGridView1.DataSource = dataTable;
+                    MessageBox.Show("Bắt đầu thao tác với Khách hàng!");
+                    Home ho = this;
+                    ho.Hide();
+                    KhachHang kh = new KhachHang();
+                    kh.connect = connect;
+                    kh.username = username;
+                    kh.ShowDialog();
+                    ho.Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
             }
         }
 
@@ -187,45 +194,85 @@ namespace UngDung
 
         private void btn_nhanvien_Click(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connect))
+            //using (SqlConnection connection = new SqlConnection(connect))
+            //{
+            //    try
+            //    {
+            //        connection.Open();
+            //        string query = "SELECT * FROM NHANVIEN";
+            //        SqlCommand command = new SqlCommand(query, connection);
+            //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+            //        DataTable dataTable = new DataTable();
+            //        adapter.Fill(dataTable);
+
+            //        dataGridView1.DataSource = dataTable;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+            //    }
+            //}
+
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(connect))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM NHANVIEN";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    dataGridView1.DataSource = dataTable;
+                    MessageBox.Show("Bắt đầu thao tác với Nhân viên!");
+                    Home ho = this;
+                    ho.Hide();
+                    NhanVien nv = new NhanVien();
+                    nv.connect = connect;
+                    nv.username = username;
+                    nv.ShowDialog();
+                    ho.Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
             }
         }
 
         private void btn_hoadon_Click(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connect))
+            //using (SqlConnection connection = new SqlConnection(connect))
+            //{
+            //    try
+            //    {
+            //        connection.Open();
+            //        string query = "SELECT * FROM DONHANG";
+            //        SqlCommand command = new SqlCommand(query, connection);
+            //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+            //        DataTable dataTable = new DataTable();
+            //        adapter.Fill(dataTable);
+
+            //        dataGridView1.DataSource = dataTable;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+            //    }
+            //}
+
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(connect))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM DONHANG";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    dataGridView1.DataSource = dataTable;
+                    MessageBox.Show("Bắt đầu thao tác với Đơn Hàng!");
+                    Home ho = this;
+                    ho.Hide();
+                    DonHang dh = new DonHang();
+                    dh.connect = connect;
+                    dh.username = username;
+                    dh.ShowDialog();
+                    ho.Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
             }
         }
 
@@ -321,23 +368,43 @@ namespace UngDung
 
         private void btn_chitietdh_Click(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connect))
+            //using (SqlConnection connection = new SqlConnection(connect))
+            //{
+            //    try
+            //    {
+            //        connection.Open();
+            //        string query = "SELECT * FROM CHITIETDONHANG";
+            //        SqlCommand command = new SqlCommand(query, connection);
+            //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+            //        DataTable dataTable = new DataTable();
+            //        adapter.Fill(dataTable);
+
+            //        dataGridView1.DataSource = dataTable;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+            //    }
+            //}
+
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(connect))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM CHITIETDONHANG";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    dataGridView1.DataSource = dataTable;
+                    MessageBox.Show("Bắt đầu thao tác với Chi tiết đơn hàng!");
+                    Home ho = this;
+                    ho.Hide();
+                    ChiTietDonHang ctdh = new ChiTietDonHang();
+                    ctdh.connect = connect;
+                    ctdh.username = username;
+                    ctdh.ShowDialog();
+                    ho.Close();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
             }
         }
 

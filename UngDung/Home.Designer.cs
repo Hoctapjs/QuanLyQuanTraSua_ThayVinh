@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_sanpham = new System.Windows.Forms.Button();
@@ -37,11 +38,9 @@
             this.btn_chitietdh = new System.Windows.Forms.Button();
             this.btn_export = new System.Windows.Forms.Button();
             this.btn_import = new System.Windows.Forms.Button();
-            this.btn_them = new System.Windows.Forms.Button();
-            this.btn_xoa = new System.Windows.Forms.Button();
-            this.btn_sua = new System.Windows.Forms.Button();
             this.btn_user_id = new System.Windows.Forms.Button();
             this.btn_phien = new System.Windows.Forms.Button();
+            this.btn_capnhat_view = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -75,11 +74,9 @@
             this.flowLayoutPanel1.Controls.Add(this.btn_chitietdh);
             this.flowLayoutPanel1.Controls.Add(this.btn_export);
             this.flowLayoutPanel1.Controls.Add(this.btn_import);
-            this.flowLayoutPanel1.Controls.Add(this.btn_them);
-            this.flowLayoutPanel1.Controls.Add(this.btn_xoa);
-            this.flowLayoutPanel1.Controls.Add(this.btn_sua);
             this.flowLayoutPanel1.Controls.Add(this.btn_user_id);
             this.flowLayoutPanel1.Controls.Add(this.btn_phien);
+            this.flowLayoutPanel1.Controls.Add(this.btn_capnhat_view);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(17, 124);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(237, 750);
@@ -137,7 +134,7 @@
             this.btn_hoadon.Name = "btn_hoadon";
             this.btn_hoadon.Size = new System.Drawing.Size(234, 51);
             this.btn_hoadon.TabIndex = 6;
-            this.btn_hoadon.Text = "Hóa Đơn";
+            this.btn_hoadon.Text = "Đơn Hàng";
             this.btn_hoadon.UseVisualStyleBackColor = false;
             this.btn_hoadon.Click += new System.EventHandler(this.btn_hoadon_Click);
             // 
@@ -183,48 +180,12 @@
             this.btn_import.UseVisualStyleBackColor = false;
             this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
             // 
-            // btn_them
-            // 
-            this.btn_them.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
-            this.btn_them.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_them.ForeColor = System.Drawing.Color.White;
-            this.btn_them.Location = new System.Drawing.Point(3, 402);
-            this.btn_them.Name = "btn_them";
-            this.btn_them.Size = new System.Drawing.Size(234, 51);
-            this.btn_them.TabIndex = 13;
-            this.btn_them.Text = "Thêm";
-            this.btn_them.UseVisualStyleBackColor = false;
-            // 
-            // btn_xoa
-            // 
-            this.btn_xoa.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
-            this.btn_xoa.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_xoa.ForeColor = System.Drawing.Color.White;
-            this.btn_xoa.Location = new System.Drawing.Point(3, 459);
-            this.btn_xoa.Name = "btn_xoa";
-            this.btn_xoa.Size = new System.Drawing.Size(234, 51);
-            this.btn_xoa.TabIndex = 14;
-            this.btn_xoa.Text = "Xóa";
-            this.btn_xoa.UseVisualStyleBackColor = false;
-            // 
-            // btn_sua
-            // 
-            this.btn_sua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
-            this.btn_sua.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_sua.ForeColor = System.Drawing.Color.White;
-            this.btn_sua.Location = new System.Drawing.Point(3, 516);
-            this.btn_sua.Name = "btn_sua";
-            this.btn_sua.Size = new System.Drawing.Size(234, 51);
-            this.btn_sua.TabIndex = 15;
-            this.btn_sua.Text = "Sửa";
-            this.btn_sua.UseVisualStyleBackColor = false;
-            // 
             // btn_user_id
             // 
             this.btn_user_id.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
             this.btn_user_id.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btn_user_id.ForeColor = System.Drawing.Color.White;
-            this.btn_user_id.Location = new System.Drawing.Point(3, 573);
+            this.btn_user_id.Location = new System.Drawing.Point(3, 402);
             this.btn_user_id.Name = "btn_user_id";
             this.btn_user_id.Size = new System.Drawing.Size(234, 51);
             this.btn_user_id.TabIndex = 16;
@@ -237,13 +198,26 @@
             this.btn_phien.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
             this.btn_phien.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btn_phien.ForeColor = System.Drawing.Color.White;
-            this.btn_phien.Location = new System.Drawing.Point(3, 630);
+            this.btn_phien.Location = new System.Drawing.Point(3, 459);
             this.btn_phien.Name = "btn_phien";
             this.btn_phien.Size = new System.Drawing.Size(234, 51);
             this.btn_phien.TabIndex = 17;
             this.btn_phien.Text = "Phiên";
             this.btn_phien.UseVisualStyleBackColor = false;
             this.btn_phien.Click += new System.EventHandler(this.btn_phien_Click);
+            // 
+            // btn_capnhat_view
+            // 
+            this.btn_capnhat_view.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_capnhat_view.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_capnhat_view.ForeColor = System.Drawing.Color.White;
+            this.btn_capnhat_view.Location = new System.Drawing.Point(3, 516);
+            this.btn_capnhat_view.Name = "btn_capnhat_view";
+            this.btn_capnhat_view.Size = new System.Drawing.Size(234, 51);
+            this.btn_capnhat_view.TabIndex = 18;
+            this.btn_capnhat_view.Text = "Cập Nhật View";
+            this.btn_capnhat_view.UseVisualStyleBackColor = false;
+            this.btn_capnhat_view.Visible = false;
             // 
             // pictureBox1
             // 
@@ -315,6 +289,7 @@
             this.ClientSize = new System.Drawing.Size(1097, 953);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Home";
             this.Text = "Home";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Home_FormClosed);
@@ -345,10 +320,8 @@
         private Label lbl_username;
         private Button btn_export;
         private Button btn_import;
-        private Button btn_them;
-        private Button btn_xoa;
-        private Button btn_sua;
         private Button btn_user_id;
         private Button btn_phien;
+        private Button btn_capnhat_view;
     }
 }

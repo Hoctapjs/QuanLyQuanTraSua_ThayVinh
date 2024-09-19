@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChonServer));
             this.label1 = new System.Windows.Forms.Label();
             this.btn_local = new System.Windows.Forms.Button();
             this.btn_ip = new System.Windows.Forms.Button();
@@ -112,6 +113,7 @@
             this.Controls.Add(this.btn_ip);
             this.Controls.Add(this.btn_local);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ChonServer";
             this.Text = "ChonServer";
             this.ResumeLayout(false);

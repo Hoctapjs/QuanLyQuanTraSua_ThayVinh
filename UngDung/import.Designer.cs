@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(import));
             this.lbl_username = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -46,6 +47,7 @@
             this.btn_chitietdh = new System.Windows.Forms.Button();
             this.btn_export = new System.Windows.Forms.Button();
             this.btn_import = new System.Windows.Forms.Button();
+            this.txt_tenbang = new System.Windows.Forms.TextBox();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -78,13 +80,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txt_tenbang);
             this.groupBox1.Controls.Add(this.txt_path_import);
             this.groupBox1.Controls.Add(this.btn_submit_import);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupBox1.Location = new System.Drawing.Point(15, 20);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(767, 190);
+            this.groupBox1.Size = new System.Drawing.Size(767, 311);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Import Table";
@@ -277,12 +280,20 @@
             this.btn_import.Text = "Import from XLS";
             this.btn_import.UseVisualStyleBackColor = false;
             // 
+            // txt_tenbang
+            // 
+            this.txt_tenbang.Location = new System.Drawing.Point(29, 186);
+            this.txt_tenbang.Name = "txt_tenbang";
+            this.txt_tenbang.Size = new System.Drawing.Size(515, 41);
+            this.txt_tenbang.TabIndex = 7;
+            // 
             // import
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1097, 631);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "import";
             this.Text = "import";
             this.Load += new System.EventHandler(this.import_Load);
@@ -318,5 +329,6 @@
         private Button btn_import;
         private PictureBox pictureBox1;
         private Button btn_thoat_im;
+        private TextBox txt_tenbang;
     }
 }

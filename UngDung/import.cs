@@ -65,7 +65,7 @@ namespace UngDung
         {
             string connectionString = connect;
             string database_name = "QuanLyTraSuaDB2";
-            string tableName = "Test";
+            string tableName = txt_tenbang.Text;
 
 
             string filePath = "";
