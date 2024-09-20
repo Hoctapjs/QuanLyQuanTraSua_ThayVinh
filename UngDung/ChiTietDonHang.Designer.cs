@@ -47,7 +47,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_thoat = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_nhanvien = new System.Windows.Forms.Button();
+            this.btn_chitietdonhang = new System.Windows.Forms.Button();
             this.btn_them = new System.Windows.Forms.Button();
             this.btn_xoa = new System.Windows.Forms.Button();
             this.btn_sua = new System.Windows.Forms.Button();
@@ -245,7 +245,7 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.btn_nhanvien);
+            this.flowLayoutPanel1.Controls.Add(this.btn_chitietdonhang);
             this.flowLayoutPanel1.Controls.Add(this.btn_them);
             this.flowLayoutPanel1.Controls.Add(this.btn_xoa);
             this.flowLayoutPanel1.Controls.Add(this.btn_sua);
@@ -254,18 +254,19 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(237, 624);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
-            // btn_nhanvien
+            // btn_chitietdonhang
             // 
-            this.btn_nhanvien.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_nhanvien.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
-            this.btn_nhanvien.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_nhanvien.ForeColor = System.Drawing.Color.White;
-            this.btn_nhanvien.Location = new System.Drawing.Point(3, 3);
-            this.btn_nhanvien.Name = "btn_nhanvien";
-            this.btn_nhanvien.Size = new System.Drawing.Size(234, 51);
-            this.btn_nhanvien.TabIndex = 9;
-            this.btn_nhanvien.Text = "Nhân Viên";
-            this.btn_nhanvien.UseVisualStyleBackColor = false;
+            this.btn_chitietdonhang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_chitietdonhang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_chitietdonhang.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_chitietdonhang.ForeColor = System.Drawing.Color.White;
+            this.btn_chitietdonhang.Location = new System.Drawing.Point(3, 3);
+            this.btn_chitietdonhang.Name = "btn_chitietdonhang";
+            this.btn_chitietdonhang.Size = new System.Drawing.Size(234, 51);
+            this.btn_chitietdonhang.TabIndex = 9;
+            this.btn_chitietdonhang.Text = "Chi TIết Đơn Hàng";
+            this.btn_chitietdonhang.UseVisualStyleBackColor = false;
+            this.btn_chitietdonhang.Click += new System.EventHandler(this.btn_chitietdonhang_Click);
             // 
             // btn_them
             // 
@@ -351,7 +352,7 @@
         private Label label1;
         private TextBox txt_soluong;
         private TextBox txt_manhanvien;
-        private Button btn_nhanvien;
+        private Button btn_chitietdonhang;
         private Button btn_them;
         private Button btn_thoat;
         private FlowLayoutPanel flowLayoutPanel1;

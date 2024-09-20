@@ -40,7 +40,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM SANPHAM";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -126,7 +126,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM SANPHAM";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -197,7 +197,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM SANPHAM";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -286,7 +286,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM SANPHAM";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -494,7 +494,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM SANPHAM";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();

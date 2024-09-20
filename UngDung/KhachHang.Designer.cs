@@ -51,8 +51,8 @@
             this.btn_them = new System.Windows.Forms.Button();
             this.btn_xoa = new System.Windows.Forms.Button();
             this.btn_sua = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btn_timdon = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -268,6 +268,7 @@
             this.btn_khachhang.TabIndex = 9;
             this.btn_khachhang.Text = "Khách Hàng";
             this.btn_khachhang.UseVisualStyleBackColor = false;
+            this.btn_khachhang.Click += new System.EventHandler(this.btn_khachhang_Click);
             // 
             // btn_them
             // 
@@ -308,17 +309,6 @@
             this.btn_sua.UseVisualStyleBackColor = false;
             this.btn_sua.Click += new System.EventHandler(this.btn_sua_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Turquoise;
-            this.pictureBox1.Image = global::UngDung.Properties.Resources.Layer_2;
-            this.pictureBox1.Location = new System.Drawing.Point(21, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(237, 106);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            // 
             // btn_timdon
             // 
             this.btn_timdon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
@@ -331,6 +321,17 @@
             this.btn_timdon.Text = "Tìm Đơn Từ Mã Khách";
             this.btn_timdon.UseVisualStyleBackColor = false;
             this.btn_timdon.Click += new System.EventHandler(this.btn_timdon_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Turquoise;
+            this.pictureBox1.Image = global::UngDung.Properties.Resources.Layer_2;
+            this.pictureBox1.Location = new System.Drawing.Point(21, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(237, 106);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
             // 
             // KhachHang
             // 

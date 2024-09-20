@@ -40,7 +40,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM KHACH";
+                    string query = "EXEC XEM_BANG_KHACH";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -129,7 +129,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM KHACH";
+                    string query = "EXEC XEM_BANG_KHACH";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -203,7 +203,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM KHACH";
+                    string query = "EXEC XEM_BANG_KHACH";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -301,7 +301,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM KHACH";
+                    string query = "EXEC XEM_BANG_KHACH";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -389,6 +389,28 @@ namespace UngDung
                 //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
                 //    }
                 //}
+            }
+        }
+
+        private void btn_khachhang_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "EXEC XEM_BANG_KHACH";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                }
             }
         }
     }

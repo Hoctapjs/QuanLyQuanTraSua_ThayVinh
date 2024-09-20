@@ -266,6 +266,7 @@
             this.btn_nhanvien.TabIndex = 9;
             this.btn_nhanvien.Text = "Nhân Viên";
             this.btn_nhanvien.UseVisualStyleBackColor = false;
+            this.btn_nhanvien.Click += new System.EventHandler(this.btn_nhanvien_Click);
             // 
             // btn_them
             // 
