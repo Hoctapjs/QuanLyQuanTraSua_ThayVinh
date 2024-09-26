@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+//using Microsoft.Data.SqlClient;
+
 
 namespace UngDung
 {
@@ -87,7 +89,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT UserID FROM Users_ID_Store WHERE Username = @Username";
+                string query = "EXEC LAY_USER_ID @Username";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
@@ -102,7 +104,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "INSERT INTO Users_ID_Store (Username) VALUES (@Username)";
+                string query = "EXEC THEM_USER_MOI_DANGNHAPSQL @Username";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
@@ -135,7 +137,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString1))
             {
                 connection.Open();
-                string checkQuery = "SELECT COUNT(*) FROM UserSessions WHERE UserID = @UserID";
+                string checkQuery = "LOGIN_CHECK_QUERY_DANGNHAPSQL @UserID";
                 using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
                 {
                     checkCommand.Parameters.AddWithValue("@UserID", userId);
@@ -144,7 +146,7 @@ namespace UngDung
                     if (count > 0)
                     {
                         // Update existing record
-                        string updateQuery = "UPDATE UserSessions SET IsLoggedIn = @IsLoggedIn WHERE UserID = @UserID";
+                        string updateQuery = "EXEC LOGIN_UPDATE_QUERY_DANGNHAPSQL @UserID, @IsLoggedIn";
                         using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
                         {
                             updateCommand.Parameters.AddWithValue("@IsLoggedIn", true);
@@ -164,7 +166,7 @@ namespace UngDung
                         //}
 
                         string sessionId = Guid.NewGuid().ToString();
-                        string query = "INSERT INTO UserSessions (SessionID, UserID, LoginTime, IsLoggedIn) VALUES (@SessionID, @UserID, @LoginTime, @IsLoggedIn)";
+                        string query = "EXEC LOGIN_INSERT_QUERY_DANGNHAPSQL @SessionID, @UserID, @LoginTime, @IsLoggedIn";
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@SessionID", sessionId);
@@ -185,7 +187,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "UPDATE UserSessions SET IsLoggedIn = @IsLoggedIn WHERE UserID = @UserID";
+                string query = "LOGOUT_UPDATE_QUERY_DANGNHAPSQL @UserID, @IsLoggedIn ";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@IsLoggedIn", false);
@@ -201,7 +203,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT IsLoggedIn FROM UserSessions WHERE UserID = @UserID";
+                string query = "IsUserLoggedIn_DANGNHAPSQL @UserID";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userId);

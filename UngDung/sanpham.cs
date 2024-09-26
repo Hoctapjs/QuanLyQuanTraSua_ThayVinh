@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office.Word;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -54,7 +55,7 @@ namespace UngDung
                 }
             }
 
-            string query_before = $@"SELECT SANPHAM.MASP FROM SANPHAM";
+            string query_before = $@"EXEC LAY_MASP_TU_SP_SANPHAM";
 
             string connectionString = connect;
 
@@ -110,9 +111,15 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"INSERT INTO SANPHAM (MASP, TENSP, GIABAN, TRANGTHAI) VALUES ('{masp}', N'{tensp}', '{giatien}', N'{trangthai}');";
-
+                    string query = "InsertSanPham @masp, @tensp, @giatien, @trangthai";
                     SqlCommand cmd = new SqlCommand(query, connection);
+
+                    // Truyền tham số cho thủ tục
+                    cmd.Parameters.AddWithValue("@masp", masp);
+                    cmd.Parameters.AddWithValue("@tensp", tensp);
+                    cmd.Parameters.AddWithValue("@giatien", giatien);
+                    cmd.Parameters.AddWithValue("@trangthai", trangthai);
+
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -181,9 +188,10 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"DELETE FROM SANPHAM WHERE MASP='{masp}'";
+                    string query = $"DeleteSanPham @masp";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@masp", masp);
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -250,7 +258,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE SANPHAM SET TENSP = @tensp, GIABAN = @giatien, TRANGTHAI = @trangthai WHERE MASP = @masp_sua;";
+                    string query = "EXEC UpdateSanPham @masp_sua, @tensp, @giatien, @trangthai ;";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -361,9 +369,11 @@ namespace UngDung
                     try
                     {
                         connection.Open();
-                        string query = $"SELECT * FROM SANPHAM WHERE TENSP = N'{tensp}';";
-
+                        string query = "SelectSanPhamByTen @tensp";
                         SqlCommand command = new SqlCommand(query, connection);
+
+                        command.Parameters.AddWithValue("@tensp", tensp);
+
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
@@ -403,9 +413,10 @@ namespace UngDung
                     try
                     {
                         connection.Open();
-                        string query = $"SELECT * FROM SANPHAM WHERE MASP = '{masp}';";
+                        string query = $"SelectSanPhamByMa @masp";
 
                         SqlCommand command = new SqlCommand(query, connection);
+                        command.Parameters.AddWithValue("@masp", masp);
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
@@ -445,9 +456,10 @@ namespace UngDung
                     try
                     {
                         connection.Open();
-                        string query = $"SELECT * FROM DONHANG dh WHERE dh.MADH IN ( SELECT DONHANG.MADH FROM DONHANG JOIN KHACH k ON k.MAKH = DONHANG.MAKH WHERE k.MAKH IN ('{makh}') )";
-
+                        string query = "SelectDonHangByMaKhach @makh";
                         SqlCommand command = new SqlCommand(query, connection);
+
+                        command.Parameters.AddWithValue("@makh", makh);
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
@@ -516,8 +528,9 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "select s.MASP, s.TENSP from SANPHAM s where s.MASP not in (select distinct c.MASP from CHITIETDONHANG c)";
+                    string query = "SelectSanPhamNotInChiTietDonHang";
                     SqlCommand command = new SqlCommand(query, connection);
+                    command.CommandType = CommandType.StoredProcedure;
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);

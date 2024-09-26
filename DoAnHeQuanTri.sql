@@ -691,6 +691,266 @@
 	SELECT * FROM SANPHAM
 	SELECT * FROM Users
 
+	use QuanLyTraSuaDB2
+
+	-- thủ tục
+	SELECT name
+FROM sys.procedures;
+
+/* drop procedure XEM_BANG_SANPHAM
+drop procedure XEM_BANG_NHANVIEN
+drop procedure XEM_BANG_KHACH
+drop procedure XEM_BANG_DONHANG
+drop procedure XEM_BANG_CHITIETDONHANG
+drop procedure XEM_VIEW_DONHANG
+drop procedure XEM_VIEW_CHITIETDONHANG */
+GO -- Batch separator để bắt đầu đoạn lệnh mới
+
+-- Tạo các stored procedure
+CREATE PROCEDURE XEM_BANG_SANPHAM 
+AS 
+BEGIN
+    SELECT * FROM SANPHAM;
+END;
+GO
+
+CREATE PROCEDURE XEM_BANG_NHANVIEN 
+AS 
+BEGIN
+    SELECT * FROM NHANVIEN;
+END;
+GO
+
+CREATE PROCEDURE XEM_BANG_KHACH 
+AS 
+BEGIN
+    SELECT * FROM KHACH;
+END;
+GO
+
+CREATE PROCEDURE XEM_BANG_DONHANG 
+AS 
+BEGIN
+    SELECT * FROM DONHANG;
+END;
+GO
+
+CREATE PROCEDURE XEM_BANG_CHITIETDONHANG 
+AS 
+BEGIN
+    SELECT * FROM CHITIETDONHANG;
+END;
+GO
+
+CREATE PROCEDURE XEM_VIEW_DONHANG 
+AS 
+BEGIN
+    SELECT * FROM V_DONHANG;
+END;
+GO
+
+CREATE PROCEDURE XEM_VIEW_CHITIETDONHANG 
+AS 
+BEGIN
+    SELECT * FROM V_CHITIETDONHANG;
+END;
+GO
+-- THỦ TỤC TRANG DANGNHAPSQL
+CREATE PROCEDURE LAY_USER_ID (@Username NVARCHAR(50))
+AS 
+BEGIN
+    SELECT UserID FROM Users_ID_Store WHERE Username = @Username
+END;
+GO
+
+
+GO
+CREATE PROCEDURE THEM_USER_MOI_DANGNHAPSQL (@Username NVARCHAR(50))
+AS 
+BEGIN
+    INSERT INTO Users_ID_Store (Username) VALUES (@Username)
+END;
+
+GO
+
+GO
+CREATE PROCEDURE LOGIN_CHECK_QUERY_DANGNHAPSQL (@UserID INT)
+AS 
+BEGIN
+    SELECT COUNT(*) FROM UserSessions WHERE UserID = @UserID
+END;
+
+GO
+GO
+CREATE PROCEDURE LOGIN_UPDATE_QUERY_DANGNHAPSQL (@UserID INT, @IsLoggedIn BIT)
+AS 
+BEGIN
+    UPDATE UserSessions SET IsLoggedIn = @IsLoggedIn WHERE UserID = @UserID
+END;
+GO
+GO
+CREATE PROCEDURE LOGIN_INSERT_QUERY_DANGNHAPSQL (
+    @SessionID uniqueidentifier,
+    @UserID int,
+    @LoginTime datetime,
+    @IsLoggedIn bit)
+AS
+BEGIN
+    INSERT INTO UserSessions (SessionID, UserID, LoginTime, IsLoggedIn)
+    VALUES (@SessionID, @UserID, @LoginTime, @IsLoggedIn);
+END;
+GO
+
+GO
+CREATE PROCEDURE LOGOUT_UPDATE_QUERY_DANGNHAPSQL (@UserID INT, @IsLoggedIn BIT)
+AS 
+BEGIN
+    UPDATE UserSessions SET IsLoggedIn = @IsLoggedIn WHERE UserID = @UserID
+END;
+GO
+CREATE PROCEDURE IsUserLoggedIn_DANGNHAPSQL (@UserID INT)
+AS 
+BEGIN
+    SELECT IsLoggedIn FROM UserSessions WHERE UserID = @UserID
+END;
+
+GO
+CREATE PROCEDURE CreateLogin
+    @username nvarchar(100),
+    @password nvarchar(100)
+AS
+BEGIN
+    DECLARE @sql nvarchar(4000);
+    
+    SET @sql = 'CREATE LOGIN [' + @username + '] WITH PASSWORD = ''' + @password + '''';
+    
+    EXEC sp_executesql @sql;
+END;
+
+
+GO
+EXEC CreateLogin @username = 'new_user', @password = 'Password!';
+
+GO
+
+CREATE PROCEDURE CreateUserForLogin
+    @username nvarchar(100),
+    @loginname nvarchar(100)
+AS
+BEGIN
+
+    DECLARE @sql nvarchar(4000);
+    
+    SET @sql = 'CREATE USER [' + @username + '] FOR LOGIN [' + @loginname + ']';
+    
+    EXEC sp_executesql @sql;
+END;
+
+
+GO
+-- tạo thủ tục cho sản phẩm
+CREATE PROCEDURE LAY_MASP_TU_SP_SANPHAM 
+AS 
+BEGIN
+    SELECT SANPHAM.MASP FROM SANPHAM
+END;
+
+GO
+
+CREATE PROCEDURE InsertSanPham
+    @masp nvarchar(50),
+    @tensp nvarchar(100),
+    @giatien decimal(18, 2),
+    @trangthai nvarchar(50)
+AS
+BEGIN
+    INSERT INTO SANPHAM (MASP, TENSP, GIABAN, TRANGTHAI)
+    VALUES (@masp, @tensp, @giatien, @trangthai);
+END;
+
+GO
+CREATE PROCEDURE DeleteSanPham
+    @masp nvarchar(50)
+AS
+BEGIN
+    DELETE FROM SANPHAM WHERE MASP = @masp;
+END;
+
+GO
+CREATE PROCEDURE UpdateSanPham
+    @masp_sua nvarchar(50),
+    @tensp nvarchar(100),
+    @giatien decimal(18, 2),
+    @trangthai nvarchar(50)
+AS
+BEGIN
+    UPDATE SANPHAM
+    SET TENSP = @tensp,
+        GIABAN = @giatien,
+        TRANGTHAI = @trangthai
+    WHERE MASP = @masp_sua;
+END;
+GO
+CREATE PROCEDURE SelectSanPhamByTen
+    @tensp nvarchar(100)
+AS
+BEGIN
+    SELECT * 
+    FROM SANPHAM
+    WHERE TENSP = @tensp;
+END;
+GO
+CREATE PROCEDURE SelectSanPhamByMa
+    @masp nvarchar(50)
+AS
+BEGIN
+    SELECT * 
+    FROM SANPHAM
+    WHERE MASP = @masp;
+END;
+
+GO
+CREATE PROCEDURE SelectDonHangByMaKhach
+    @makh nvarchar(50)
+AS
+BEGIN
+    SELECT * 
+    FROM DONHANG dh 
+    WHERE dh.MADH IN (
+        SELECT DONHANG.MADH 
+        FROM DONHANG 
+        JOIN KHACH k ON k.MAKH = DONHANG.MAKH 
+        WHERE k.MAKH = @makh
+    );
+END;
+GO	
+CREATE PROCEDURE SelectSanPhamNotInChiTietDonHang
+AS
+BEGIN
+    SELECT s.MASP, s.TENSP 
+    FROM SANPHAM s 
+    WHERE s.MASP NOT IN (SELECT DISTINCT c.MASP FROM CHITIETDONHANG c);
+END;
+GO
+-- end thủ tục sản phẩm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 

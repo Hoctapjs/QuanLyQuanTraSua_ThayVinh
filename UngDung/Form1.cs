@@ -66,14 +66,22 @@ namespace UngDung
                     connection.Open();
 
                     // Tạo LOGIN trước
-                    string createLoginCommand = $"CREATE LOGIN [{username}] WITH PASSWORD = '{password}'";
+                    string createLoginCommand = "EXEC CreateLogin @username, @password";
                     SqlCommand cmd = new SqlCommand(createLoginCommand, connection);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+
                     cmd.ExecuteNonQuery();
 
                     // Tạo USER sau khi đã có LOGIN
-                    string createUserCommand = $"USE QuanLyTraSuaDB2; CREATE USER [{username}] FOR LOGIN [{username}]";
-                    cmd = new SqlCommand(createUserCommand, connection);
-                    cmd.ExecuteNonQuery();
+                    string createUserCommand = "CreateUserForLogin @username, @loginname";
+                    SqlCommand cmd1 = new SqlCommand(createUserCommand, connection);
+
+                    // Thêm các tham số cho câu lệnh SQL
+                    cmd1.Parameters.AddWithValue("@username", username);
+                    cmd1.Parameters.AddWithValue("@loginname", username);
+
+                    cmd1.ExecuteNonQuery();
                 }
                 catch (SqlException ex)
                 {
