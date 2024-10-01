@@ -40,8 +40,8 @@ namespace UngDung
             if (ip_con == true)
             {
                 connectionString = $@"
-                Data Source={ip}\{server_name};Initial Catalog=QuanLyTraSuaDB2;
-                User ID={username}; 
+                Data Source={ip};Initial Catalog=QuanLyTraSuaDB2;
+                User ID={username};
                 Password={password};";
             }
             else
