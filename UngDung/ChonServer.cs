@@ -30,12 +30,15 @@ namespace UngDung
         private void btn_ip_Click(object sender, EventArgs e)
         {
             string ip = txt_ip.Text;
+            string server_name = txt_servername.Text;
+
             try
             {
                 ChonServer chonsv = this;
                 chonsv.Hide();
                 DangNhap_sql loginForm = new DangNhap_sql();
                 loginForm.ip = ip;
+                loginForm.server_name = server_name;
                 loginForm.ip_con = true;
                 loginForm.ShowDialog();
                 chonsv.Close();

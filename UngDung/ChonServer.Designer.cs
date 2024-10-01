@@ -35,6 +35,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txt_ip = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txt_servername = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -65,7 +67,7 @@
             this.btn_ip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
             this.btn_ip.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btn_ip.ForeColor = System.Drawing.Color.White;
-            this.btn_ip.Location = new System.Drawing.Point(88, 360);
+            this.btn_ip.Location = new System.Drawing.Point(88, 423);
             this.btn_ip.Name = "btn_ip";
             this.btn_ip.Size = new System.Drawing.Size(630, 65);
             this.btn_ip.TabIndex = 2;
@@ -86,10 +88,10 @@
             // txt_ip
             // 
             this.txt_ip.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txt_ip.Location = new System.Drawing.Point(207, 279);
+            this.txt_ip.Location = new System.Drawing.Point(252, 279);
             this.txt_ip.Name = "txt_ip";
             this.txt_ip.PlaceholderText = "192.168.1.17";
-            this.txt_ip.Size = new System.Drawing.Size(511, 41);
+            this.txt_ip.Size = new System.Drawing.Size(466, 41);
             this.txt_ip.TabIndex = 4;
             // 
             // label3
@@ -102,11 +104,32 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Nhập IP";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(88, 359);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(150, 35);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Nhập server";
+            // 
+            // txt_servername
+            // 
+            this.txt_servername.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txt_servername.Location = new System.Drawing.Point(252, 356);
+            this.txt_servername.Name = "txt_servername";
+            this.txt_servername.PlaceholderText = "SQLSEVER2012";
+            this.txt_servername.Size = new System.Drawing.Size(466, 41);
+            this.txt_servername.TabIndex = 6;
+            // 
             // ChonServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 517);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txt_servername);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txt_ip);
             this.Controls.Add(this.label2);
@@ -129,5 +152,7 @@
         private Label label2;
         private TextBox txt_ip;
         private Label label3;
+        private Label label4;
+        private TextBox txt_servername;
     }
 }

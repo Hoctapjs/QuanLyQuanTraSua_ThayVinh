@@ -26,6 +26,7 @@ namespace UngDung
         }
 
         public string ip;
+        public string server_name;
         public bool ip_con;
         string connectionString;
 
@@ -39,7 +40,7 @@ namespace UngDung
             if (ip_con == true)
             {
                 connectionString = $@"
-                Data Source={ip}\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;
+                Data Source={ip}\{server_name};Initial Catalog=QuanLyTraSuaDB2;
                 User ID={username}; 
                 Password={password};";
             }
