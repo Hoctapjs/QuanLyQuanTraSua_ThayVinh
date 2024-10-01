@@ -4,7 +4,7 @@
 
 	CREATE DATABASE QuanLyTraSuaDB3;
 
-	USE QuanLyTraSuaDB3;
+	USE QuanLyTraSuaDB2;
 
 
 	-- Bảng KHACH
@@ -858,7 +858,7 @@ END;
 GO
 
 CREATE PROCEDURE InsertSanPham
-    @masp nvarchar(50),
+    @masp char(6),
     @tensp nvarchar(100),
     @giatien decimal(18, 2),
     @trangthai nvarchar(50)
@@ -870,7 +870,7 @@ END;
 
 GO
 CREATE PROCEDURE DeleteSanPham
-    @masp nvarchar(50)
+    @masp char(6)
 AS
 BEGIN
     DELETE FROM SANPHAM WHERE MASP = @masp;
@@ -901,7 +901,7 @@ BEGIN
 END;
 GO
 CREATE PROCEDURE SelectSanPhamByMa
-    @masp nvarchar(50)
+    @masp char(6)
 AS
 BEGIN
     SELECT * 
@@ -910,8 +910,8 @@ BEGIN
 END;
 
 GO
-CREATE PROCEDURE SelectDonHangByMaKhach
-    @makh nvarchar(50)
+CREATE PROCEDURE SelectDonHangByMaKhach (
+    @makh char(6) )
 AS
 BEGIN
     SELECT * 
