@@ -502,7 +502,19 @@ namespace UngDung
             }
         }
 
+        private void btn_DangXuat_Click(object sender, EventArgs e)
+        {
+            if (userid == null)
+            {
+                MessageBox.Show("userid là null ở home");
+            }
+            if (connect == null)
+            {
+                MessageBox.Show("connect là null ở home");
+            }
 
+            Logout(userid, connect);
+        }
     }
 }
 
