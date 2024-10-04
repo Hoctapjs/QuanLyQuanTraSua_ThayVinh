@@ -51,6 +51,7 @@ namespace UngDung
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                    return;
                 }
             }
 
