@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office.Word;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +11,9 @@ using System.Windows.Forms;
 
 namespace UngDung
 {
-    public partial class KhachHang : Form
+    public partial class Order : Form
     {
-        public KhachHang()
+        public Order()
         {
             InitializeComponent();
         }
@@ -22,12 +21,15 @@ namespace UngDung
         public string connect;
         public string username;
         List<string> rowsList;
+        string masp;
+        string tensp;
+        string makh;
 
 
         private void sanpham_Load(object sender, EventArgs e)
         {
             lbl_username.Text = username;
-            btn_them.Enabled = true;
+            btn_them.Enabled = false;
             btn_xoa.Enabled = false;
             btn_sua.Enabled = false;
             if (username == "sa")
@@ -41,7 +43,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "EXEC XEM_BANG_KHACH";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -55,7 +57,7 @@ namespace UngDung
                 }
             }
 
-            string query_before = $@"EXEC SELECT_MA_KHACH_FROM_KHACH";
+            string query_before = $@"EXEC LAY_MASP_TU_SP_SANPHAM";
 
             string connectionString = connect;
 
@@ -87,24 +89,21 @@ namespace UngDung
 
         private void btn_them_Click(object sender, EventArgs e)
         {
-            string makh = txt_ma.Text;
-            string hoten = txt_ten.Text;
-            string sodienthoai = txt_sodienthoai.Text;
-            string email = txt_email.Text;
-            string diachi = txt_diachi.Text;
-
+            
+            
+            string giatien = txt_sanpham_giatien.Text;
+            string trangthai = txt_sanpham_trangthai.Text;
 
             foreach (var row in rowsList)
             {
                 //cbo_danhsach_table.Items.Add(row);
-                if (makh == row)
+                if (masp == row)
                 {
-                    MessageBox.Show($"Đã tồn tại khách hàng có mã: {makh}", "Thông báo");
-                    txt_ma.Clear();
-                    txt_ten.Clear();
-                    txt_sodienthoai.Clear();
-                    txt_email.Clear();
-                    txt_diachi.Clear();
+                    MessageBox.Show($"Đã tồn tại sản phẩm có mã: {masp}", "Thông báo");
+        
+        
+                    txt_sanpham_giatien.Clear();
+                    txt_sanpham_trangthai.Clear();
                     return;
                 }
             }
@@ -114,9 +113,15 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"INSERT INTO KHACH (MAKH, HOTEN, SODIENTHOAI, EMAIL, DIACHI) VALUES ('{makh}', N'{hoten}', '{sodienthoai}', '{email}', N'{diachi}');";
-
+                    string query = "InsertSanPham @masp, @tensp, @giatien, @trangthai";
                     SqlCommand cmd = new SqlCommand(query, connection);
+
+                    // Truyền tham số cho thủ tục
+                    
+                    
+                    cmd.Parameters.AddWithValue("@giatien", giatien);
+                    cmd.Parameters.AddWithValue("@trangthai", trangthai);
+
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -130,7 +135,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "EXEC XEM_BANG_KHACH";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -143,29 +148,26 @@ namespace UngDung
                     MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
                 }
             }
-            txt_ma.Clear();
-            txt_ten.Clear();
-            txt_sodienthoai.Clear();
-            txt_email.Clear();
-            txt_diachi.Clear();
+
+
+            txt_sanpham_giatien.Clear();
+            txt_sanpham_trangthai.Clear();
         }
 
         private void btn_xoa_Click(object sender, EventArgs e)
         {
-            string makh = txt_ma.Text;
-            string hoten = txt_ten.Text;
-            string sodienthoai = txt_sodienthoai.Text;
-            string email = txt_email.Text;
-            string diachi = txt_diachi.Text;
+            
+            
+            string giatien = txt_sanpham_giatien.Text;
+            string trangthai = txt_sanpham_trangthai.Text;
 
-            if (makh.Length == 0)
+            if (masp.Length == 0)
             {
-                MessageBox.Show($"cần mã khách hàng để xóa", "Thông báo");
-                txt_ma.Clear();
-                txt_ten.Clear();
-                txt_sodienthoai.Clear();
-                txt_email.Clear();
-                txt_diachi.Clear();
+                MessageBox.Show($"cần mã sản phẩm để xóa", "Thông báo");
+    
+    
+                txt_sanpham_giatien.Clear();
+                txt_sanpham_trangthai.Clear();
                 return;
             }
 
@@ -174,11 +176,11 @@ namespace UngDung
             //    //cbo_danhsach_table.Items.Add(row);
             //    if (masp != row)
             //    {
-            //        MessageBox.Show($"Không tồn tại khách hàng có mã khớp với mã cần xóa: {masp}", "Thông báo");
-            //        txt_ma.Clear();
-            //        txt_ten.Clear();
-            //        txt_giatien.Clear();
-            //        txt_trangthai.Clear();
+            //        MessageBox.Show($"Không tồn tại sản phẩm có mã khớp với mã cần xóa: {masp}", "Thông báo");
+            //        txt_sanpham_ma.Clear();
+            //        txt_sanpham_ten.Clear();
+            //        txt_sanpham_giatien.Clear();
+            //        txt_sanpham_trangthai.Clear();
             //        return;
             //    }
             //}
@@ -188,14 +190,15 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"DELETE FROM KHACH WHERE MAKH='{makh}'";
+                    string query = $"DeleteSanPham @masp";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+                    
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Bạn không thể xóa khách hàng có thông tin trong các bảng khác");
+                    MessageBox.Show($"Lỗi {ex}");
                 }
             }
 
@@ -204,7 +207,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "EXEC XEM_BANG_KHACH";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -221,15 +224,14 @@ namespace UngDung
             foreach (var row in rowsList)
             {
                 //cbo_danhsach_table.Items.Add(row);
-                if (makh == row)
+                if (masp == row)
                 {
-                    MessageBox.Show($"Đã xóa khách hàng có mã: {makh}", "Thông báo");
+                    MessageBox.Show($"Đã xóa sản phẩm có mã: {masp}", "Thông báo");
                     rowsList.Remove(row);
-                    txt_ma.Clear();
-                    txt_ten.Clear();
-                    txt_sodienthoai.Clear();
-                    txt_email.Clear();
-                    txt_diachi.Clear();
+        
+        
+                    txt_sanpham_giatien.Clear();
+                    txt_sanpham_trangthai.Clear();
                     return;
                 }
             }
@@ -237,20 +239,19 @@ namespace UngDung
 
         private void btn_sua_Click(object sender, EventArgs e)
         {
-            string makh = txt_ma.Text;
-            string hoten = txt_ten.Text;
-            string sodienthoai = txt_sodienthoai.Text;
-            string email = txt_email.Text;
-            string diachi = txt_diachi.Text;
-            string makh_sua = txt_makhachhangsua.Text;
+            
+            
+            string giatien = txt_sanpham_giatien.Text;
+            string trangthai = txt_sanpham_trangthai.Text;
+            string masp_sua = txt_sanpham_sua.Text;
 
             //if (masp.Length == 0)
             //{
-            //    MessageBox.Show($"cần mã khách hàng để xóa", "Thông báo");
-            //    txt_ma.Clear();
-            //    txt_ten.Clear();
-            //    txt_giatien.Clear();
-            //    txt_trangthai.Clear();
+            //    MessageBox.Show($"cần mã sản phẩm để xóa", "Thông báo");
+            //    txt_sanpham_ma.Clear();
+            //    txt_sanpham_ten.Clear();
+            //    txt_sanpham_giatien.Clear();
+            //    txt_sanpham_trangthai.Clear();
             //    return;
             //}
 
@@ -259,39 +260,32 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE KHACH SET HOTEN = @hoten, SODIENTHOAI = @sodienthoai, EMAIL = @email, DIACHI = @diachi WHERE MAKH = @makhsua;";
+                    string query = "EXEC UpdateSanPham @masp_sua, @tensp, @giatien, @trangthai ;";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
                         // Add parameters to avoid SQL injection
-                        cmd.Parameters.AddWithValue("@hoten", hoten);
-                        cmd.Parameters.AddWithValue("@sodienthoai", sodienthoai);
-                        cmd.Parameters.AddWithValue("@email", email);
-                        cmd.Parameters.AddWithValue("@diachi", diachi);
-                        cmd.Parameters.AddWithValue("@makhsua", makh_sua);
-
+                        
+                        cmd.Parameters.AddWithValue("@giatien", giatien);
+                        cmd.Parameters.AddWithValue("@trangthai", trangthai);
+                        cmd.Parameters.AddWithValue("@masp_sua", masp_sua);
 
                         // Execute the query
                         int rowsAffected = cmd.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Cập nhật khách hàng thành công.");
-                            txt_ma.Clear();
-                            txt_ten.Clear();
-                            txt_sodienthoai.Clear();
-                            txt_email.Clear();
-                            txt_diachi.Clear();
+                            MessageBox.Show("Cập nhật sản phẩm thành công.");
                         }
                         else
                         {
-                            MessageBox.Show("Không tìm thấy khách hàng để cập nhật.");
+                            MessageBox.Show("Không tìm thấy sản phẩm để cập nhật.");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     // Handle exception and possibly log it
-                    MessageBox.Show($"Đã xảy ra lỗi khi cập nhật khách hàng. {ex}");
+                    MessageBox.Show($"Đã xảy ra lỗi khi cập nhật sản phẩm. {ex}");
                     // Log the exception (not shown here)
                 }
             }
@@ -302,7 +296,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "EXEC XEM_BANG_KHACH";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -325,42 +319,62 @@ namespace UngDung
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    MessageBox.Show("Quay lại trang chủ Home!");
+                    MessageBox.Show("Quay lại Trang Chủ Home!");
 
                     //Logout(userid, connectionString);
                     //IsUserLoggedIn(userid, connectionString);
 
 
                     // Mở form chính hoặc thực hiện hành động khác sau khi đăng nhập thành công
-                    KhachHang kh = this;
-                    kh.Hide();
+                    Order order = this;
+                    order.Hide();
                     Home homeForm = new Home();
                     homeForm.connect = connectionString;
                     homeForm.username = username;
                     homeForm.ShowDialog();
-                    kh.Close();
+                    order.Close();
                 }
             }
             catch (SqlException ex)
             {
-                MessageBox.Show($"Lỗi đăng nhập");
+                MessageBox.Show($"Lỗi quay lại");
             }
         }
 
-        private void btn_timdon_Click(object sender, EventArgs e)
+        private void btn_sanpham_tim_Click(object sender, EventArgs e)
         {
-            string makh = txt_ma.Text;
-            if (makh.Length != 0)
+            
+            
+            string giatien = txt_sanpham_giatien.Text.Trim();
+            string trangthai = txt_sanpham_trangthai.Text.Trim();
+            
+
+            //foreach (var row in rowsList)
+            //{
+            //    //cbo_danhsach_table.Items.Add(row);
+            //    if (masp == row)
+            //    {
+            //        MessageBox.Show($"Đã tồn tại sản phẩm có mã: {masp}", "Thông báo");
+            //        txt_sanpham_ma.Clear();
+            //        txt_sanpham_ten.Clear();
+            //        txt_sanpham_giatien.Clear();
+            //        txt_sanpham_trangthai.Clear();
+            //        return;
+            //    }
+            //}
+
+
+            if (masp.Length == 0 && tensp.Length != 0)
             {
                 using (SqlConnection connection = new SqlConnection(connect))
                 {
                     try
                     {
                         connection.Open();
-                        string query = $"TIM_DONHANG_TU_MAKHACH @makh";
-
+                        string query = "SelectSanPhamByTen @tensp";
                         SqlCommand command = new SqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@makh", makh);
+
+                        command.Parameters.AddWithValue("@tensp", tensp);
 
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
                         DataTable dataTable = new DataTable();
@@ -393,16 +407,108 @@ namespace UngDung
                 //    }
                 //}
             }
+
+            if (tensp.Length == 0 && masp.Length != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = $"SelectSanPhamByMa @masp";
+
+                        SqlCommand command = new SqlCommand(query, connection);
+                        command.Parameters.AddWithValue("@masp", masp);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi {ex}");
+                    }
+                }
+
+                //using (SqlConnection connection = new SqlConnection(connect))
+                //{
+                //    try
+                //    {
+                //        connection.Open();
+                //        string query = "SELECT * FROM SANPHAM";
+                //        SqlCommand command = new SqlCommand(query, connection);
+                //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                //        DataTable dataTable = new DataTable();
+                //        adapter.Fill(dataTable);
+
+                //        dataGridView1.DataSource = dataTable;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                //    }
+                //}
+            }
+
+            if (makh.Length != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    try
+                    {
+                        connection.Open();
+                        string query = "SelectDonHangByMaKhach @makh";
+                        SqlCommand command = new SqlCommand(query, connection);
+
+                        command.Parameters.AddWithValue("@makh", makh);
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        dataGridView1.DataSource = dataTable;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi {ex}");
+                    }
+                }
+
+                //using (SqlConnection connection = new SqlConnection(connect))
+                //{
+                //    try
+                //    {
+                //        connection.Open();
+                //        string query = "SELECT * FROM SANPHAM";
+                //        SqlCommand command = new SqlCommand(query, connection);
+                //        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                //        DataTable dataTable = new DataTable();
+                //        adapter.Fill(dataTable);
+
+                //        dataGridView1.DataSource = dataTable;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                //    }
+                //}
+            }
+
+
+
+
+            txt_sanpham_giatien.Clear();
+            txt_sanpham_trangthai.Clear();
         }
 
-        private void btn_khachhang_Click(object sender, EventArgs e)
+        private void btn_sanpham_Click(object sender, EventArgs e)
         {
             using (SqlConnection connection = new SqlConnection(connect))
             {
                 try
                 {
                     connection.Open();
-                    string query = "EXEC XEM_BANG_KHACH";
+                    string query = "EXEC XEM_BANG_SANPHAM";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -417,80 +523,27 @@ namespace UngDung
             }
         }
 
-        private void btn_tim_Click(object sender, EventArgs e)
+        private void btn_mon_chuadathang_Click(object sender, EventArgs e)
         {
-            string makh = txt_ma.Text;
-            string tenkh = txt_ten.Text;
-            string sodt = txt_sodienthoai.Text;
-            if (string.IsNullOrEmpty(makh) != true)
+            using (SqlConnection connection = new SqlConnection(connect))
             {
-                using (SqlConnection connection = new SqlConnection(connect))
+                try
                 {
-                    try
-                    {
-                        connection.Open();
-                        string query = "EXEC TIM_KHACHHANG_BANG_MAKH @makh";
-                        SqlCommand command = new SqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@makh", makh);
-                        SqlDataAdapter adapter = new SqlDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
+                    connection.Open();
+                    string query = "SelectSanPhamNotInChiTietDonHang";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
 
-                        dataGridView1.DataSource = dataTable;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                    }
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
                 }
             }
-
-            if (string.IsNullOrEmpty(tenkh) != true)
-            {
-                using (SqlConnection connection = new SqlConnection(connect))
-                {
-                    try
-                    {
-                        connection.Open();
-                        string query = "EXEC TIM_KHACHHANG_BANG_TENKH @tenkh";
-                        SqlCommand command = new SqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@tenkh", tenkh);
-                        SqlDataAdapter adapter = new SqlDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-
-                        dataGridView1.DataSource = dataTable;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(sodt) != true)
-            {
-                using (SqlConnection connection = new SqlConnection(connect))
-                {
-                    try
-                    {
-                        connection.Open();
-                        string query = "\tEXEC TIM_KHACHHANG_BANG_SODT @sodt";
-                        SqlCommand command = new SqlCommand(query, connection);
-                        command.Parameters.AddWithValue("@sodt", sodt);
-                        SqlDataAdapter adapter = new SqlDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-
-                        dataGridView1.DataSource = dataTable;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                    }
-                }
-            }
-
         }
     }
 }

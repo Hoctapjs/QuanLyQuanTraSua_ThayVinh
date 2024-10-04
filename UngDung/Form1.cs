@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using DocumentFormat.OpenXml.Drawing;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Security.Cryptography;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -7,7 +8,7 @@ namespace UngDung
 {
     public partial class Form1 : Form
     {
-        private string connectionString = @"Data Source=LAPTOP-2IRIHD28\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;Persist Security Info=True;User ID=son;Password=123";
+        private string connectionString = @"Data Source=LAPTOP-2IRIHD28\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;Persist Security Info=True;User ID=sa;Password=sa";
 
 
 
@@ -20,6 +21,8 @@ namespace UngDung
         private void btndangky_Click(object sender, EventArgs e)
         {
             string username = txttendangnhap.Text;
+            string username1 = txttendangnhap.Text;
+
             string password = txtmatkhau.Text;
             string re_password = txtxacnhanmatkhau.Text;
 
@@ -70,18 +73,34 @@ namespace UngDung
                     SqlCommand cmd = new SqlCommand(createLoginCommand, connection);
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Parameters.AddWithValue("@password", password);
-
                     cmd.ExecuteNonQuery();
 
                     // Tạo USER sau khi đã có LOGIN
-                    string createUserCommand = "CreateUserForLogin @username, @loginname";
+                    string createUserCommand = "CreateUserForLogin @username, @username1";
                     SqlCommand cmd1 = new SqlCommand(createUserCommand, connection);
-
-                    // Thêm các tham số cho câu lệnh SQL
                     cmd1.Parameters.AddWithValue("@username", username);
-                    cmd1.Parameters.AddWithValue("@loginname", username);
-
+                    cmd1.Parameters.AddWithValue("@username1", username1); // Ensure username1 is defined earlier
                     cmd1.ExecuteNonQuery();
+
+                    // GRANT EXECUTE permissions
+                    string[] sqlGrantCommands = {
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.THEM_USER_MOI_DANGNHAPSQL TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LAY_USER_ID TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_CHECK_QUERY_DANGNHAPSQL TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_INSERT_QUERY_DANGNHAPSQL TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_UPDATE_QUERY_DANGNHAPSQL TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGOUT_UPDATE_QUERY_DANGNHAPSQL TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.IsUserLoggedIn_DANGNHAPSQL TO [{username}]",
+            $"GRANT SELECT ON Users_ID_Store TO [{username}]",
+            $"GRANT SELECT ON UserSessions TO [{username}]",
+            $"GRANT UPDATE ON UserSessions TO [{username}]"
+                };
+
+                    foreach (var grantCommand in sqlGrantCommands)
+                    {
+                        SqlCommand cmdGrant = new SqlCommand(grantCommand, connection);
+                        cmdGrant.ExecuteNonQuery();
+                    }
                 }
                 catch (SqlException ex)
                 {
@@ -100,6 +119,7 @@ namespace UngDung
                 }
                 MessageBox.Show("Bạn đã đăng ký thành công!", "Thông Báo", MessageBoxButtons.OK);
             }
+
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
