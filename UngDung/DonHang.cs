@@ -55,7 +55,7 @@ namespace UngDung
                 }
             }
 
-            string query_before = $@"SELECT DONHANG.MADH FROM DONHANG";
+            string query_before = $@"EXEC LAY_MADH_TU_DH_DONHANG";
 
             string connectionString = connect;
 
@@ -114,9 +114,15 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"INSERT INTO DONHANG (MADH, MAKH, MANV, NGAYDH) VALUES ('{madh}', '{makh}', '{manv}', '{ngaydonhang}');";
+                    string query = "InsertDonHang @madh, @makh, @manv, @ngaydonhang;";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+
+                    cmd.Parameters.AddWithValue("@madh", madh);
+                    cmd.Parameters.AddWithValue("@makh", makh);
+                    cmd.Parameters.AddWithValue("@manv", manv);
+                    cmd.Parameters.AddWithValue("@ngaydonhang", ngaydonhang);
+
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -188,9 +194,10 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"DELETE FROM DONHANG WHERE MADH='{madh}'";
+                    string query = $"DeleteDonHang @madh";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@madh", madh);
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -259,7 +266,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE DONHANG SET MAKH = @makh, MANV = @manv, NGAYDH = @ngaydonhang WHERE MADH = @madhsua;";
+                    string query = "EXEC UpdateDonHang @madhsua, @makh, @manv, @ngaydonhang;";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -267,7 +274,6 @@ namespace UngDung
                         cmd.Parameters.AddWithValue("@makh", makh);
                         cmd.Parameters.AddWithValue("@manv", manv);
                         cmd.Parameters.AddWithValue("@ngaydonhang", ngaydonhang);
-                        //cmd.Parameters.AddWithValue("@diachi", diachi);
                         cmd.Parameters.AddWithValue("@madhsua", madh_sua);
 
 

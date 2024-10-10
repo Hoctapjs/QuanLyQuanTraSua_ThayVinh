@@ -115,9 +115,16 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"INSERT INTO KHACH (MAKH, HOTEN, SODIENTHOAI, EMAIL, DIACHI) VALUES ('{makh}', N'{hoten}', '{sodienthoai}', '{email}', N'{diachi}');";
+                    string query = "InsertKhach @makh, @hoten, @sodienthoai, @email, @diachi";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+
+                    cmd.Parameters.AddWithValue("@makh", makh);
+                    cmd.Parameters.AddWithValue("@hoten", hoten);
+                    cmd.Parameters.AddWithValue("@sodienthoai", sodienthoai);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@diachi", diachi);
+
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -190,9 +197,10 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"DELETE FROM KHACH WHERE MAKH='{makh}'";
+                    string query = $"DeleteKhach @makh";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@makh", makh);
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -262,7 +270,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE KHACH SET HOTEN = @hoten, SODIENTHOAI = @sodienthoai, EMAIL = @email, DIACHI = @diachi WHERE MAKH = @makhsua;";
+                    string query = "EXEC UpdateKhach @hoten, @sodienthoai, @email, @diachi, @makhsua";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

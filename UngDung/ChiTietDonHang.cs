@@ -55,7 +55,7 @@ namespace UngDung
                 }
             }
 
-            string query_before = $@"SELECT MADH, MASP FROM V_CHITIETDONHANG";
+            string query_before = $@"EXEC LAY_MADH_MASP_TU_V_CHITIETDONHANG";
 
             string connectionString = connect;
 
@@ -108,9 +108,13 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"INSERT INTO CHITIETDONHANG (MADH, MASP, MANV, SOLUONG) VALUES ('{madh}', '{masp}', '{manv}', '{soluong_num}');";
+                    string query = "InsertChiTietDonHang @madh, @masp, @manv, @soluong_num";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@madh", madh);
+                    cmd.Parameters.AddWithValue("@masp", masp);
+                    cmd.Parameters.AddWithValue("@manv", manv);
+                    cmd.Parameters.AddWithValue("@soluong_num", soluong_num);
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -182,9 +186,11 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"DELETE FROM CHITIETDONHANG WHERE MADH='{madh}' AND MASP='{masp}'";
+                    string query = $"DeleteChiTietDonHang @madh, @masp";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@madh", madh);
+                    cmd.Parameters.AddWithValue("@masp", masp);
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -212,7 +218,7 @@ namespace UngDung
                 }
             }
 
-            string query_before = $@"SELECT MADH, MASP FROM V_CHITIETDONHANG";
+            string query_before = $@"EXEC LAY_MADH_MASP_TU_V_CHITIETDONHANG";
 
             string connectionString = connect;
 
@@ -277,7 +283,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE CHITIETDONHANG SET MANV = @manv, SOLUONG = @soluong WHERE MADH = @madhsua AND MASP = @maspsua;";
+                    string query = "EXEC UpdateChiTietDonHang @manv, @soluong, @madhsua, @maspsua";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {

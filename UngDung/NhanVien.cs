@@ -114,9 +114,17 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"INSERT INTO NHANVIEN (MANV, HOTEN, GIOITINH, DIACHI, SODIENTHOAI) VALUES ('{manv}', N'{hoten}', '{gioitinh}', '{diachi}', N'{sodienthoai}');";
+                    string query = "InsertNhanVien @manv, @hoten, @gioitinh, @diachi, @sodienthoai";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+
+                    // Truyền tham số cho thủ tục
+                    cmd.Parameters.AddWithValue("@manv", manv);
+                    cmd.Parameters.AddWithValue("@hoten", hoten);
+                    cmd.Parameters.AddWithValue("@gioitinh", gioitinh);
+                    cmd.Parameters.AddWithValue("@diachi", diachi);
+                    cmd.Parameters.AddWithValue("@sodienthoai", sodienthoai);
+
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -189,9 +197,12 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = $"DELETE FROM NHANVIEN WHERE MAKH='{manv}'";
+                    string query = $"DeleteNhanVien @manv";
 
                     SqlCommand cmd = new SqlCommand(query, connection);
+
+                    cmd.Parameters.AddWithValue("@manv", manv);
+
                     SqlDataReader reader = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -261,7 +272,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "UPDATE NHANVIEN SET HOTEN = @hoten, SODIENTHOAI = @sodienthoai, GIOITINH = @gioitinh, DIACHI = @diachi WHERE MANV = @manvsua;";
+                    string query = "EXEC UpdateNhanVien @manvsua, @hoten, @sodienthoai, @gioitinh, @diachi";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
