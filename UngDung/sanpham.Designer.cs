@@ -67,12 +67,13 @@
             // 
             panel1.BackgroundImage = Properties.Resources.Layer_11;
             panel1.BackgroundImageLayout = ImageLayout.Stretch;
+            panel1.Controls.Add(btn_thoat);
             panel1.Controls.Add(groupBox1);
             panel1.Controls.Add(lbl_username);
             panel1.Controls.Add(dataGridView1);
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(4, 4, 4, 4);
+            panel1.Margin = new Padding(4);
             panel1.Name = "panel1";
             panel1.Size = new Size(1371, 1050);
             panel1.TabIndex = 0;
@@ -95,9 +96,9 @@
             groupBox1.Controls.Add(txt_sanpham_ma);
             groupBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             groupBox1.Location = new Point(30, 78);
-            groupBox1.Margin = new Padding(4, 4, 4, 4);
+            groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Padding = new Padding(4, 4, 4, 4);
+            groupBox1.Padding = new Padding(4);
             groupBox1.Size = new Size(984, 531);
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
@@ -116,7 +117,7 @@
             // txt_makhachhang
             // 
             txt_makhachhang.Location = new Point(38, 441);
-            txt_makhachhang.Margin = new Padding(4, 4, 4, 4);
+            txt_makhachhang.Margin = new Padding(4);
             txt_makhachhang.Name = "txt_makhachhang";
             txt_makhachhang.Size = new Size(434, 39);
             txt_makhachhang.TabIndex = 12;
@@ -134,7 +135,7 @@
             // txt_sanpham_sua
             // 
             txt_sanpham_sua.Location = new Point(38, 328);
-            txt_sanpham_sua.Margin = new Padding(4, 4, 4, 4);
+            txt_sanpham_sua.Margin = new Padding(4);
             txt_sanpham_sua.Name = "txt_sanpham_sua";
             txt_sanpham_sua.Size = new Size(434, 39);
             txt_sanpham_sua.TabIndex = 10;
@@ -145,7 +146,7 @@
             btn_sanpham_tim.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_sanpham_tim.ForeColor = Color.White;
             btn_sanpham_tim.Location = new Point(508, 306);
-            btn_sanpham_tim.Margin = new Padding(4, 4, 4, 4);
+            btn_sanpham_tim.Margin = new Padding(4);
             btn_sanpham_tim.Name = "btn_sanpham_tim";
             btn_sanpham_tim.Size = new Size(292, 64);
             btn_sanpham_tim.TabIndex = 9;
@@ -196,7 +197,7 @@
             // txt_sanpham_trangthai
             // 
             txt_sanpham_trangthai.Location = new Point(508, 216);
-            txt_sanpham_trangthai.Margin = new Padding(4, 4, 4, 4);
+            txt_sanpham_trangthai.Margin = new Padding(4);
             txt_sanpham_trangthai.Name = "txt_sanpham_trangthai";
             txt_sanpham_trangthai.Size = new Size(434, 39);
             txt_sanpham_trangthai.TabIndex = 3;
@@ -204,7 +205,7 @@
             // txt_sanpham_giatien
             // 
             txt_sanpham_giatien.Location = new Point(38, 216);
-            txt_sanpham_giatien.Margin = new Padding(4, 4, 4, 4);
+            txt_sanpham_giatien.Margin = new Padding(4);
             txt_sanpham_giatien.Name = "txt_sanpham_giatien";
             txt_sanpham_giatien.Size = new Size(434, 39);
             txt_sanpham_giatien.TabIndex = 2;
@@ -212,7 +213,7 @@
             // txt_sanpham_ten
             // 
             txt_sanpham_ten.Location = new Point(508, 102);
-            txt_sanpham_ten.Margin = new Padding(4, 4, 4, 4);
+            txt_sanpham_ten.Margin = new Padding(4);
             txt_sanpham_ten.Name = "txt_sanpham_ten";
             txt_sanpham_ten.Size = new Size(434, 39);
             txt_sanpham_ten.TabIndex = 1;
@@ -220,7 +221,7 @@
             // txt_sanpham_ma
             // 
             txt_sanpham_ma.Location = new Point(38, 102);
-            txt_sanpham_ma.Margin = new Padding(4, 4, 4, 4);
+            txt_sanpham_ma.Margin = new Padding(4);
             txt_sanpham_ma.Name = "txt_sanpham_ma";
             txt_sanpham_ma.Size = new Size(434, 39);
             txt_sanpham_ma.TabIndex = 0;
@@ -244,7 +245,7 @@
             dataGridView1.BackgroundColor = Color.White;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(30, 640);
-            dataGridView1.Margin = new Padding(4, 4, 4, 4);
+            dataGridView1.Margin = new Padding(4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.RowTemplate.Height = 29;
@@ -253,12 +254,11 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(btn_thoat);
             panel2.Controls.Add(flowLayoutPanel1);
             panel2.Controls.Add(pictureBox1);
             panel2.Dock = DockStyle.Right;
             panel2.Location = new Point(1033, 0);
-            panel2.Margin = new Padding(4, 4, 4, 4);
+            panel2.Margin = new Padding(4);
             panel2.Name = "panel2";
             panel2.Size = new Size(338, 1050);
             panel2.TabIndex = 1;
@@ -268,8 +268,8 @@
             btn_thoat.BackColor = Color.FromArgb(96, 187, 146);
             btn_thoat.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_thoat.ForeColor = Color.White;
-            btn_thoat.Location = new Point(26, 988);
-            btn_thoat.Margin = new Padding(4, 4, 4, 4);
+            btn_thoat.Location = new Point(722, 7);
+            btn_thoat.Margin = new Padding(4);
             btn_thoat.Name = "btn_thoat";
             btn_thoat.Size = new Size(292, 64);
             btn_thoat.TabIndex = 8;
@@ -285,7 +285,7 @@
             flowLayoutPanel1.Controls.Add(btn_sua);
             flowLayoutPanel1.Controls.Add(btn_mon_chuadathang);
             flowLayoutPanel1.Location = new Point(26, 166);
-            flowLayoutPanel1.Margin = new Padding(4, 4, 4, 4);
+            flowLayoutPanel1.Margin = new Padding(4);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(296, 780);
             flowLayoutPanel1.TabIndex = 7;
@@ -297,7 +297,7 @@
             btn_sanpham.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_sanpham.ForeColor = Color.White;
             btn_sanpham.Location = new Point(4, 4);
-            btn_sanpham.Margin = new Padding(4, 4, 4, 4);
+            btn_sanpham.Margin = new Padding(4);
             btn_sanpham.Name = "btn_sanpham";
             btn_sanpham.Size = new Size(292, 64);
             btn_sanpham.TabIndex = 9;
@@ -311,7 +311,7 @@
             btn_them.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_them.ForeColor = Color.White;
             btn_them.Location = new Point(4, 76);
-            btn_them.Margin = new Padding(4, 4, 4, 4);
+            btn_them.Margin = new Padding(4);
             btn_them.Name = "btn_them";
             btn_them.Size = new Size(292, 64);
             btn_them.TabIndex = 13;
@@ -325,7 +325,7 @@
             btn_xoa.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_xoa.ForeColor = Color.White;
             btn_xoa.Location = new Point(4, 148);
-            btn_xoa.Margin = new Padding(4, 4, 4, 4);
+            btn_xoa.Margin = new Padding(4);
             btn_xoa.Name = "btn_xoa";
             btn_xoa.Size = new Size(292, 64);
             btn_xoa.TabIndex = 14;
@@ -339,7 +339,7 @@
             btn_sua.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_sua.ForeColor = Color.White;
             btn_sua.Location = new Point(4, 220);
-            btn_sua.Margin = new Padding(4, 4, 4, 4);
+            btn_sua.Margin = new Padding(4);
             btn_sua.Name = "btn_sua";
             btn_sua.Size = new Size(292, 64);
             btn_sua.TabIndex = 15;
@@ -353,7 +353,7 @@
             btn_mon_chuadathang.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             btn_mon_chuadathang.ForeColor = Color.White;
             btn_mon_chuadathang.Location = new Point(4, 292);
-            btn_mon_chuadathang.Margin = new Padding(4, 4, 4, 4);
+            btn_mon_chuadathang.Margin = new Padding(4);
             btn_mon_chuadathang.Name = "btn_mon_chuadathang";
             btn_mon_chuadathang.Size = new Size(292, 64);
             btn_mon_chuadathang.TabIndex = 16;
@@ -366,7 +366,7 @@
             pictureBox1.BackColor = Color.Turquoise;
             pictureBox1.Image = Properties.Resources.Layer_2;
             pictureBox1.Location = new Point(26, 15);
-            pictureBox1.Margin = new Padding(4, 4, 4, 4);
+            pictureBox1.Margin = new Padding(4);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(296, 132);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -381,7 +381,7 @@
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "sanpham";
             Text = "sanpham";
             Load += sanpham_Load;
