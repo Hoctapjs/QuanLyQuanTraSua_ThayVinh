@@ -545,30 +545,30 @@ namespace UngDung
 
             string connectionString = connect;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter adapter = new SqlDataAdapter(query_before, connection);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    SqlDataAdapter adapter = new SqlDataAdapter(query_before, connection);
+            //    DataTable dataTable = new DataTable();
+            //    adapter.Fill(dataTable);
 
-                // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
-                rowsList = new List<string>();
+            //    // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
+            //    rowsList = new List<string>();
 
-                // Duyệt qua các hàng trong DataTable
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    // Chuyển đổi mỗi hàng thành chuỗi và thêm vào danh sách
-                    string rowString = string.Join(", ", row.ItemArray);
-                    rowsList.Add(rowString);
-                }
+            //    // Duyệt qua các hàng trong DataTable
+            //    foreach (DataRow row in dataTable.Rows)
+            //    {
+            //        // Chuyển đổi mỗi hàng thành chuỗi và thêm vào danh sách
+            //        string rowString = string.Join(", ", row.ItemArray);
+            //        rowsList.Add(rowString);
+            //    }
 
-                //// Hiển thị kết quả
-                //foreach (var row in rowsList)
-                //{
-                //    cbo_danhsach_table.Items.Add(row);
-                //}
+            //    //// Hiển thị kết quả
+            //    //foreach (var row in rowsList)
+            //    //{
+            //    //    cbo_danhsach_table.Items.Add(row);
+            //    //}
 
-            }
+            //}
         }
 
         private void btn_thoat_Click_1(object sender, EventArgs e)
