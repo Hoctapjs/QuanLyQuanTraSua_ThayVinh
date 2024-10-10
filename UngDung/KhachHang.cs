@@ -24,67 +24,67 @@ namespace UngDung
         List<string> rowsList;
 
 
-        private void sanpham_Load(object sender, EventArgs e)
-        {
-            lbl_username.Text = username;
-            btn_them.Enabled = true;
-            btn_xoa.Enabled = false;
-            btn_sua.Enabled = false;
-            if (username == "sa")
-            {
-                btn_them.Enabled = true;
-                btn_xoa.Enabled = true;
-                btn_sua.Enabled = true;
-            }
-            using (SqlConnection connection = new SqlConnection(connect))
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "EXEC XEM_BANG_KHACH";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
+        //private void sanpham_Load(object sender, EventArgs e)
+        //{
+        //    lbl_username.Text = username;
+        //    btn_them.Enabled = true;
+        //    btn_xoa.Enabled = false;
+        //    btn_sua.Enabled = false;
+        //    if (username == "sa")
+        //    {
+        //        btn_them.Enabled = true;
+        //        btn_xoa.Enabled = true;
+        //        btn_sua.Enabled = true;
+        //    }
+        //    using (SqlConnection connection = new SqlConnection(connect))
+        //    {
+        //        try
+        //        {
+        //            connection.Open();
+        //            string query = "EXEC XEM_BANG_KHACH";
+        //            SqlCommand command = new SqlCommand(query, connection);
+        //            SqlDataAdapter adapter = new SqlDataAdapter(command);
+        //            DataTable dataTable = new DataTable();
+        //            adapter.Fill(dataTable);
 
-                    dataGridView1.DataSource = dataTable;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
-                    return;
-                }
-            }
+        //            dataGridView1.DataSource = dataTable;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+        //            return;
+        //        }
+        //    }
 
-            string query_before = $@"EXEC SELECT_MA_KHACH_FROM_KHACH";
+        //    string query_before = $@"EXEC SELECT_MA_KHACH_FROM_KHACH";
 
-            string connectionString = connect;
+        //    string connectionString = connect;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlDataAdapter adapter = new SqlDataAdapter(query_before, connection);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        SqlDataAdapter adapter = new SqlDataAdapter(query_before, connection);
+        //        DataTable dataTable = new DataTable();
+        //        adapter.Fill(dataTable);
 
-                // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
-                rowsList = new List<string>();
+        //        // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
+        //        rowsList = new List<string>();
 
-                // Duyệt qua các hàng trong DataTable
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    // Chuyển đổi mỗi hàng thành chuỗi và thêm vào danh sách
-                    string rowString = string.Join(", ", row.ItemArray);
-                    rowsList.Add(rowString);
-                }
+        //        // Duyệt qua các hàng trong DataTable
+        //        foreach (DataRow row in dataTable.Rows)
+        //        {
+        //            // Chuyển đổi mỗi hàng thành chuỗi và thêm vào danh sách
+        //            string rowString = string.Join(", ", row.ItemArray);
+        //            rowsList.Add(rowString);
+        //        }
 
-                //// Hiển thị kết quả
-                //foreach (var row in rowsList)
-                //{
-                //    cbo_danhsach_table.Items.Add(row);
-                //}
+        //        //// Hiển thị kết quả
+        //        //foreach (var row in rowsList)
+        //        //{
+        //        //    cbo_danhsach_table.Items.Add(row);
+        //        //}
 
-            }
-        }
+        //    }
+        //}
 
         private void btn_them_Click(object sender, EventArgs e)
         {
@@ -507,6 +507,98 @@ namespace UngDung
                 }
             }
 
+        }
+
+        private void KhachHang_Load(object sender, EventArgs e)
+        {
+            lbl_username.Text = username;
+            btn_them.Enabled = true;
+            btn_xoa.Enabled = false;
+            btn_sua.Enabled = false;
+            if (username == "sa")
+            {
+                btn_them.Enabled = true;
+                btn_xoa.Enabled = true;
+                btn_sua.Enabled = true;
+            }
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "EXEC XEM_BANG_KHACH";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                    return;
+                }
+            }
+
+            string query_before = $@"EXEC SELECT_MA_KHACH_FROM_KHACH";
+
+            string connectionString = connect;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter(query_before, connection);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
+                rowsList = new List<string>();
+
+                // Duyệt qua các hàng trong DataTable
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Chuyển đổi mỗi hàng thành chuỗi và thêm vào danh sách
+                    string rowString = string.Join(", ", row.ItemArray);
+                    rowsList.Add(rowString);
+                }
+
+                //// Hiển thị kết quả
+                //foreach (var row in rowsList)
+                //{
+                //    cbo_danhsach_table.Items.Add(row);
+                //}
+
+            }
+        }
+
+        private void btn_thoat_Click_1(object sender, EventArgs e)
+        {
+            string connectionString = connect;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    MessageBox.Show("Quay lại trang chủ Home!");
+
+                    //Logout(userid, connectionString);
+                    //IsUserLoggedIn(userid, connectionString);
+
+
+                    // Mở form chính hoặc thực hiện hành động khác sau khi đăng nhập thành công
+                    KhachHang kh = this;
+                    kh.Hide();
+                    Home homeForm = new Home();
+                    homeForm.connect = connectionString;
+                    homeForm.username = username;
+                    homeForm.ShowDialog();
+                    kh.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
         }
     }
 }

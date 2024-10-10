@@ -123,6 +123,8 @@ namespace UngDung
             btn_capnhat_view.Visible = false;
             btn_user_id.Visible = false;
             btn_phien.Visible = false;
+            btn_sanpham.Visible = false;
+            btn_nhanvien.Visible = false;
             lbl_username.Text = username;
             if (username == "sa")
             {
@@ -131,6 +133,8 @@ namespace UngDung
                 btn_capnhat_view.Visible = true;
                 btn_user_id.Visible = true;
                 btn_phien.Visible = true;
+                btn_sanpham.Visible = true;
+                btn_nhanvien.Visible = true;
             }
 
             userid = GetUserID(username, connect);

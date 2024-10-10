@@ -8,7 +8,7 @@ namespace UngDung
 {
     public partial class Form1 : Form
     {
-        private string connectionString = @"Data Source=LAPTOP-2IRIHD28\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;Persist Security Info=True;User ID=sa;Password=sa";
+        private string connectionString = @"Data Source=LAPTOP-2IRIHD28\SQLSEVER2012;Initial Catalog=QuanLyTraSuaDB2;Persist Security Info=True;User ID=son;Password=123";
 
 
 
@@ -93,6 +93,13 @@ namespace UngDung
             $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.IsUserLoggedIn_DANGNHAPSQL TO [{username}]",
             $"GRANT SELECT ON Users_ID_Store TO [{username}]",
             $"GRANT SELECT ON UserSessions TO [{username}]",
+            $"GRANT SELECT ON KHACH TO [{username}]",
+            $"GRANT SELECT ON DONHANG TO [{username}]",
+            $"GRANT SELECT ON CHITIETDONHANG TO [{username}]",
+            $"GRANT UPDATE ON KHACH TO [{username}]",
+            $"GRANT INSERT ON KHACH TO [{username}]",
+            $"GRANT INSERT ON DONHANG TO [{username}]",
+            $"GRANT INSERT ON CHITIETDONHANG TO [{username}]",
             $"GRANT UPDATE ON UserSessions TO [{username}]"
                 };
 
