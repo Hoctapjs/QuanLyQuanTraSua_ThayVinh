@@ -600,5 +600,35 @@ namespace UngDung
                 MessageBox.Show($"Lỗi đăng nhập");
             }
         }
+
+        private void btn_thoat_Click_2(object sender, EventArgs e)
+        {
+            string connectionString = connect;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    MessageBox.Show("Quay lại trang chủ Home!");
+
+                    //Logout(userid, connectionString);
+                    //IsUserLoggedIn(userid, connectionString);
+
+
+                    // Mở form chính hoặc thực hiện hành động khác sau khi đăng nhập thành công
+                    KhachHang kh = this;
+                    kh.Hide();
+                    Home homeForm = new Home();
+                    homeForm.connect = connectionString;
+                    homeForm.username = username;
+                    homeForm.ShowDialog();
+                    kh.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
+        }
     }
 }

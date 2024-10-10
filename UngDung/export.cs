@@ -242,5 +242,29 @@ namespace UngDung
 
             MessageBox.Show($"Dữ liệu đã được xuất ra file {table}.xlsx");
         }
+
+        private void btn_thoat_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    connection.Open();
+                    MessageBox.Show("Quay lại Home!");
+                    // Mở form chính hoặc thực hiện hành động khác sau khi đăng nhập thành công
+                    export ex = this;
+                    ex.Hide();
+                    Home homeForm = new Home();
+                    homeForm.connect = connect;
+                    homeForm.username = username;
+                    homeForm.ShowDialog();
+                    ex.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi quay lại");
+            }
+        }
     }
 }
