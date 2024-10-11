@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClosedXML.Excel;
+using System.IO;
 
 namespace UngDung
 {
@@ -63,99 +65,101 @@ namespace UngDung
 
         private void btn_submit_import_Click(object sender, EventArgs e)
         {
-            string connectionString = connect;
-            string database_name = "QuanLyTraSuaDB2";
+            // Đường dẫn tới file CSV
+            string csvFilePath = @"D:\chua file xlsx\csv\KHACH.csv";
             string tableName = txt_tenbang.Text;
+            string connectionString = connect;
 
+            // Đọc cấu trúc của file CSV và tạo bảng
+            CreateTableFromCSV(csvFilePath, connectionString, tableName);
 
-            string filePath = "";
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    // Lấy đường dẫn file đã chọn
-                    filePath = openFileDialog.FileName;
-                }
-            }
-
-            // Đọc dữ liệu từ file XLSX
-            DataTable dataTable = new DataTable();
-            using (XLWorkbook workbook = new XLWorkbook(filePath))
-            {
-                IXLWorksheet worksheet = workbook.Worksheet(1);
-                bool firstRow = true;
-                foreach (IXLRow row in worksheet.Rows())
-                {
-                    if (firstRow)
-                    {
-                        foreach (IXLCell cell in row.Cells())
-                        {
-                            dataTable.Columns.Add(cell.Value.ToString());
-                        }
-                        firstRow = false;
-                    }
-                    else
-                    {
-                        dataTable.Rows.Add();
-                        int i = 0;
-                        foreach (IXLCell cell in row.Cells())
-                        {
-                            dataTable.Rows[dataTable.Rows.Count - 1][i] = cell.Value.ToString();
-                            i++;
-                        }
-                    }
-                }
-            }
-
-            // Tạo câu lệnh SQL để tạo bảng
-            string createTableQuery = $"CREATE TABLE {tableName} (";
-
-            foreach (DataColumn column in dataTable.Columns)
-            {
-                createTableQuery += $"{column.ColumnName} NVARCHAR(MAX),";
-            }
-
-            createTableQuery = createTableQuery.TrimEnd(',') + ")";
-
-            // Kết nối tới cơ sở dữ liệu và tạo bảng
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                //// Kiểm tra nếu bảng đã tồn tại và xóa nếu cần (tùy chọn)
-                //string dropTableQuery = $"IF OBJECT_ID('{tableName}', 'U') IS NOT NULL DROP TABLE {tableName}";
-                //using (SqlCommand dropCommand = new SqlCommand(dropTableQuery, connection))
-                //{
-                //    dropCommand.ExecuteNonQuery();
-                //}
-
-                // Tạo bảng mới
-                using (SqlCommand createTableCommand = new SqlCommand(createTableQuery, connection))
-                {
-                    createTableCommand.ExecuteNonQuery();
-                }
-
-                // Chèn dữ liệu vào bảng vừa tạo
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    var columnNames = string.Join(", ", dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName));
-                    var parameters = string.Join(", ", dataTable.Columns.Cast<DataColumn>().Select(c => "@" + c.ColumnName));
-
-                    string query = $"INSERT INTO {tableName} ({columnNames}) VALUES ({parameters})";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        foreach (DataColumn column in dataTable.Columns)
-                        {
-                            command.Parameters.AddWithValue("@" + column.ColumnName, row[column]);
-                        }
-                        command.ExecuteNonQuery();
-                    }
-                }
-            }
-
-            MessageBox.Show("Dữ liệu đã được import vào cơ sở dữ liệu.");
+            // Sử dụng BCP để nhập dữ liệu (không có dòng tiêu đề)
+            string csvFileWithoutHeader = @"D:\chua file xlsx\csv\KHACH_noheader.csv";
+            RemoveHeader(csvFilePath, csvFileWithoutHeader);
+            ImportDataWithBCP(csvFileWithoutHeader, tableName, connectionString);
         }
+
+        // Hàm tạo bảng tự động từ CSV
+        private void CreateTableFromCSV(string csvFilePath, string connectionString, string tableName)
+        {
+            try
+            {
+                // Đọc file CSV và lấy dòng đầu tiên (tên cột)
+                var lines = File.ReadAllLines(csvFilePath);
+                var headers = lines[0].Split(',');
+
+                StringBuilder createTableQuery = new StringBuilder();
+                createTableQuery.AppendLine($"CREATE TABLE {tableName} (");
+
+                // Duyệt qua các cột và xác định kiểu dữ liệu (VD: NVARCHAR cho tất cả cột)
+                foreach (var header in headers)
+                {
+                    createTableQuery.AppendLine($"{header.Trim()} NVARCHAR(255),");
+                }
+
+                // Loại bỏ dấu phẩy cuối cùng và đóng câu lệnh
+                createTableQuery.Remove(createTableQuery.Length - 3, 3);
+                createTableQuery.AppendLine(");");
+
+                // Kết nối SQL Server và thực thi câu lệnh tạo bảng
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(createTableQuery.ToString(), conn);
+                    cmd.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("Bảng đã được tạo thành công.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tạo bảng: " + ex.Message);
+            }
+        }
+
+        // Hàm xóa dòng tiêu đề và lưu vào file mới
+        private void RemoveHeader(string originalFile, string newFile)
+        {
+            var lines = File.ReadAllLines(originalFile).Skip(1); // Bỏ qua dòng đầu tiên
+            File.WriteAllLines(newFile, lines); // Lưu lại file không có dòng đầu tiên
+        }
+
+        // Hàm sử dụng BCP để nhập dữ liệu vào bảng
+        private void ImportDataWithBCP(string csvFilePath, string tableName, string connectionString)
+        {
+            try
+            {
+                string bcpCommand = $@"bcp {tableName} in ""{csvFilePath}"" -c -t, -S -d QuanLyTraSuaDB2 -T -C 65001";
+                Process process = new Process();
+                process.StartInfo.FileName = "cmd.exe";
+                process.StartInfo.Arguments = $"/C {bcpCommand}";
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
+
+                string result = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                MessageBox.Show("Dữ liệu đã được import thành công.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi import dữ liệu: " + ex.Message);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
