@@ -81,7 +81,7 @@
             this.btn_thoat.TabIndex = 9;
             this.btn_thoat.Text = "Thoát";
             this.btn_thoat.UseVisualStyleBackColor = false;
-            this.btn_thoat.Click += new System.EventHandler(this.btn_thoat_Click_1);
+            this.btn_thoat.Click += new System.EventHandler(this.btn_thoat_Click);
             // 
             // panel3
             // 
@@ -135,17 +135,18 @@
             this.btn_submit_export.TabIndex = 5;
             this.btn_submit_export.Text = "Export";
             this.btn_submit_export.UseVisualStyleBackColor = false;
+            this.btn_submit_export.Click += new System.EventHandler(this.btn_submit_export_Click_1);
             // 
             // cbo_danhsach_table
             // 
             this.cbo_danhsach_table.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbo_danhsach_table.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cbo_danhsach_table.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cbo_danhsach_table.FormattingEnabled = true;
-            this.cbo_danhsach_table.ItemHeight = 35;
+            this.cbo_danhsach_table.ItemHeight = 25;
             this.cbo_danhsach_table.Location = new System.Drawing.Point(30, 116);
             this.cbo_danhsach_table.Name = "cbo_danhsach_table";
-            this.cbo_danhsach_table.Size = new System.Drawing.Size(515, 43);
+            this.cbo_danhsach_table.Size = new System.Drawing.Size(515, 33);
             this.cbo_danhsach_table.TabIndex = 4;
             // 
             // label2
@@ -309,6 +310,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "export";
             this.Text = "export";
+            this.Load += new System.EventHandler(this.export_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
