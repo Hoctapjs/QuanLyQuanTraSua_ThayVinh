@@ -65,18 +65,26 @@ namespace UngDung
 
         private void btn_submit_import_Click(object sender, EventArgs e)
         {
-            // Đường dẫn tới file CSV
-            string csvFilePath = @"D:\chua file xlsx\csv\KHACH.csv";
-            string tableName = txt_tenbang.Text;
-            string connectionString = connect;
+            // Khởi tạo OpenFileDialog để người dùng chọn file CSV
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";  // Lọc để chỉ chọn file CSV
+            openFileDialog.Title = "Chọn File CSV";
 
-            // Đọc cấu trúc của file CSV và tạo bảng
-            CreateTableFromCSV(csvFilePath, connectionString, tableName);
+            // Kiểm tra nếu người dùng chọn file
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string csvFilePath = openFileDialog.FileName;  // Lấy đường dẫn của file đã chọn
+                string tableName = txt_tenbang.Text;  // Lấy tên bảng từ người dùng
+                string connectionString = connect;  // Chuỗi kết nối
 
-            // Sử dụng BCP để nhập dữ liệu (không có dòng tiêu đề)
-            string csvFileWithoutHeader = @"D:\chua file xlsx\csv\KHACH_noheader.csv";
-            RemoveHeader(csvFilePath, csvFileWithoutHeader);
-            ImportDataWithBCP(csvFileWithoutHeader, tableName, connectionString);
+                // Đọc cấu trúc của file CSV và tạo bảng
+                CreateTableFromCSV(csvFilePath, connectionString, tableName);
+
+                // Sử dụng BCP để nhập dữ liệu (không có dòng tiêu đề)
+                string csvFileWithoutHeader = @"D:\chua file xlsx\csv\KHACH_noheader.csv";  // Định nghĩa đường dẫn mới cho file CSV không có tiêu đề
+                RemoveHeader(csvFilePath, csvFileWithoutHeader);  // Xóa dòng tiêu đề
+                ImportDataWithBCP(csvFileWithoutHeader, tableName, connectionString);
+            }
         }
 
         // Hàm tạo bảng tự động từ CSV
@@ -148,6 +156,7 @@ namespace UngDung
                 MessageBox.Show("Lỗi khi import dữ liệu: " + ex.Message);
             }
         }
+
 
 
 
