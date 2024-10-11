@@ -100,8 +100,34 @@ namespace UngDung
             $"GRANT INSERT ON KHACH TO [{username}]",
             $"GRANT INSERT ON DONHANG TO [{username}]",
             $"GRANT INSERT ON CHITIETDONHANG TO [{username}]",
-            $"GRANT UPDATE ON UserSessions TO [{username}]"
-                };
+            $"GRANT UPDATE ON UserSessions TO [{username}]",
+
+            // Các câu lệnh cấp quyền mới
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_BANG_KHACH TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.SELECT_MA_KHACH_FROM_KHACH TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_SODT TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_TENKH TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_MAKH TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_DONHANG_TU_MAKHACH TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateKhach TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteKhach TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertKhach TO [{username}]",
+
+            // Các câu lệnh cấp quyền mới liên quan đến Đơn Hàng
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_DONHANG TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_TU_DH_DONHANG TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertDonHang TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteDonHang TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_DONHANG TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateDonHang TO [{username}]",
+
+            // Các câu lệnh cấp quyền mới liên quan đến Chi Tiết Đơn Hàng
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_CHITIETDONHANG TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_MASP_TU_V_CHITIETDONHANG TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertChiTietDonHang TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteChiTietDonHang TO [{username}]",
+            $"GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateChiTietDonHang TO [{username}]"
+        };
 
                     foreach (var grantCommand in sqlGrantCommands)
                     {
@@ -126,6 +152,8 @@ namespace UngDung
                 }
                 MessageBox.Show("Bạn đã đăng ký thành công!", "Thông Báo", MessageBoxButtons.OK);
             }
+
+
 
         }
 

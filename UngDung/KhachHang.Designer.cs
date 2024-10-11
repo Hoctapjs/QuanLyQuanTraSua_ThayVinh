@@ -270,6 +270,7 @@
             this.btn_khachhang.TabIndex = 9;
             this.btn_khachhang.Text = "Khách Hàng";
             this.btn_khachhang.UseVisualStyleBackColor = false;
+            this.btn_khachhang.Click += new System.EventHandler(this.btn_khachhang_Click_1);
             // 
             // btn_them
             // 
@@ -282,6 +283,7 @@
             this.btn_them.TabIndex = 13;
             this.btn_them.Text = "Thêm";
             this.btn_them.UseVisualStyleBackColor = false;
+            this.btn_them.Click += new System.EventHandler(this.btn_them_Click_1);
             // 
             // btn_xoa
             // 
@@ -294,6 +296,7 @@
             this.btn_xoa.TabIndex = 14;
             this.btn_xoa.Text = "Xóa";
             this.btn_xoa.UseVisualStyleBackColor = false;
+            this.btn_xoa.Click += new System.EventHandler(this.btn_xoa_Click_1);
             // 
             // btn_sua
             // 
@@ -306,6 +309,7 @@
             this.btn_sua.TabIndex = 15;
             this.btn_sua.Text = "Sửa";
             this.btn_sua.UseVisualStyleBackColor = false;
+            this.btn_sua.Click += new System.EventHandler(this.btn_sua_Click_1);
             // 
             // btn_timdon
             // 
@@ -318,6 +322,7 @@
             this.btn_timdon.TabIndex = 16;
             this.btn_timdon.Text = "Tìm Đơn Từ Mã Khách";
             this.btn_timdon.UseVisualStyleBackColor = false;
+            this.btn_timdon.Click += new System.EventHandler(this.btn_timdon_Click_1);
             // 
             // btn_tim
             // 
@@ -330,6 +335,7 @@
             this.btn_tim.TabIndex = 17;
             this.btn_tim.Text = "Tìm";
             this.btn_tim.UseVisualStyleBackColor = false;
+            this.btn_tim.Click += new System.EventHandler(this.btn_tim_Click_1);
             // 
             // pictureBox1
             // 
@@ -351,6 +357,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "KhachHang";
             this.Text = "Khách hàng";
+            this.Load += new System.EventHandler(this.KhachHang_Load_1);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
