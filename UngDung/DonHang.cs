@@ -26,7 +26,7 @@ namespace UngDung
         private void sanpham_Load(object sender, EventArgs e)
         {
             lbl_username.Text = username;
-            btn_them.Enabled = false;
+            btn_them.Enabled = true;
             btn_xoa.Enabled = false;
             btn_sua.Enabled = false;
             if (username == "sa")

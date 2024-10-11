@@ -392,5 +392,60 @@ namespace UngDung
                 }
             }
         }
+
+        private void ChiTietDonHang_Load(object sender, EventArgs e)
+        {
+            lbl_username.Text = username;
+            btn_them.Enabled = true;
+            btn_xoa.Enabled = false;
+            btn_sua.Enabled = false;
+            if (username == "sa")
+            {
+                btn_them.Enabled = true;
+                btn_xoa.Enabled = true;
+                btn_sua.Enabled = true;
+            }
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "EXEC XEM_VIEW_CHITIETDONHANG";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                    return;
+                }
+            }
+
+            string query_before = $@"EXEC LAY_MADH_MASP_TU_V_CHITIETDONHANG";
+
+            string connectionString = connect;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter(query_before, connection);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                // Tạo một danh sách để lưu các hàng dưới dạng chuỗi
+                rowsList = new List<string>();
+
+                // Duyệt qua các hàng trong DataTable
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    // Chuyển đổi mỗi hàng thành chuỗi và thêm vào danh sách
+                    string rowString = string.Join(", ", row.ItemArray);
+                    rowsList.Add(rowString);
+                }
+            }
+        }
     }
 }

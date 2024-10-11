@@ -1028,7 +1028,7 @@ namespace UngDung
             lbl_username.Text = username;
             btn_them.Enabled = true;
             btn_xoa.Enabled = false;
-            btn_sua.Enabled = false;
+            btn_sua.Enabled = true;
             if (username == "sa")
             {
                 btn_them.Enabled = true;
