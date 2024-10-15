@@ -278,6 +278,7 @@
             this.btn_them.TabIndex = 13;
             this.btn_them.Text = "Thêm";
             this.btn_them.UseVisualStyleBackColor = false;
+            this.btn_them.Click += new System.EventHandler(this.btn_them_Click_1);
             // 
             // btn_xoa
             // 
@@ -290,6 +291,7 @@
             this.btn_xoa.TabIndex = 14;
             this.btn_xoa.Text = "Xóa";
             this.btn_xoa.UseVisualStyleBackColor = false;
+            this.btn_xoa.Click += new System.EventHandler(this.btn_xoa_Click_1);
             // 
             // btn_sua
             // 
@@ -302,6 +304,7 @@
             this.btn_sua.TabIndex = 15;
             this.btn_sua.Text = "Sửa";
             this.btn_sua.UseVisualStyleBackColor = false;
+            this.btn_sua.Click += new System.EventHandler(this.btn_sua_Click_1);
             // 
             // pictureBox1
             // 
