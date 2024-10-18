@@ -125,6 +125,8 @@ namespace UngDung
             btn_phien.Visible = false;
             btn_sanpham.Visible = false;
             btn_nhanvien.Visible = false;
+            btn_congthuc.Visible = false;
+            btn_nguyenlieu.Visible = false;
             lbl_username.Text = username;
             if (username == "sa")
             {
@@ -135,6 +137,8 @@ namespace UngDung
                 btn_phien.Visible = true;
                 btn_sanpham.Visible = true;
                 btn_nhanvien.Visible = true;
+                btn_congthuc.Visible = true;
+                btn_nguyenlieu.Visible = true;
             }
 
             userid = GetUserID(username, connect);
@@ -518,6 +522,112 @@ namespace UngDung
             }
 
             Logout(userid, connect);
+        }
+
+        private void btn_DangXuat_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_sanpham_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_khach_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_chitietdh_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_import_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_phien_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_nhanvien_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_hoadon_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_export_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_user_id_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_capnhat_view_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_congthuc_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    connection.Open();
+                    MessageBox.Show("Bắt đầu thao tác với Công Thức!");
+                    Home ho = this;
+                    ho.Hide();
+                    CongThuc ct = new CongThuc();
+                    ct.connect = connect;
+                    ct.username = username;
+                    ct.ShowDialog();
+                    ho.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
+        }
+
+        private void btn_nguyenlieu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    connection.Open();
+                    MessageBox.Show("Bắt đầu thao tác với Nguyên Liệu!");
+                    Home ho = this;
+                    ho.Hide();
+                    NguyenLieu nl = new NguyenLieu();
+                    nl.connect = connect;
+                    nl.username = username;
+                    nl.ShowDialog();
+                    ho.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
+        }
+
+        private void Home_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

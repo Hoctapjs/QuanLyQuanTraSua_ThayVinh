@@ -270,7 +270,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "EXEC UpdateKhach @hoten, @sodienthoai, @email, @diachi, @makhsua";
+                    string query = "EXEC UpdateKhach @makhsua, @hoten, @sodienthoai, @email, @diachi";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
