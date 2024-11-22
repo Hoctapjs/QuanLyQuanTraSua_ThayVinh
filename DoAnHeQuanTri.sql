@@ -958,7 +958,9 @@ GO
 			WHERE k.MAKH = @makh
 		);
 	END;
-GO	
+GO
+
+-- thủ tục của lồng phân cấp
 CREATE PROCEDURE SelectSanPhamNotInChiTietDonHang
 AS
 BEGIN
@@ -1016,6 +1018,7 @@ GO
 			SELECT KHACH.MAKH FROM KHACH
 		END
 GO
+    -- thủ tục của lồng phân cấp
 	create PROCEDURE TIM_DONHANG_TU_MAKHACH
 	(
 		@makhach char(6)
@@ -1160,7 +1163,7 @@ GO
 use QuanLyTraSuaDB2
 GO
 	-- TRIGGER CHI TIẾT ĐƠN HÀNG
-		-- TRIGGER TÍNH GIA
+		-- TRIGGER TÍNH GIÁ
 			CREATE TRIGGER trg_TinhGiaChiTietDonHang
 			ON CHITIETDONHANG
 			AFTER INSERT, UPDATE
@@ -1186,8 +1189,8 @@ GO
 				WHERE MADH = @MADH AND MASP = @MASP;
 			END;
 GO
-	-- TRIGGER ĐƠN HÀNG'
-		-- TRIGGER TÍNH TONGTIEN
+	-- TRIGGER ĐƠN HÀNG
+		-- TRIGGER TÍNH TỔNG TIỀN
 			CREATE TRIGGER trg_TinhTongTienDonHang
 			ON CHITIETDONHANG
 			AFTER INSERT, UPDATE, DELETE
@@ -1515,8 +1518,153 @@ GO
 			SELECT * FROM DONHANG dh WHERE dh.MADH IN ( SELECT DONHANG.MADH FROM DONHANG JOIN KHACH k ON k.MAKH = DONHANG.MAKH WHERE k.MAKH IN (@makhach) )
 		END
 GO
+	-- HÀM 1: CẬP NHẬT TRẠNG THÁI SẢN PHẨM
+	CREATE FUNCTION LayTrangThaiSanPham
+	(
+		@MASP CHAR(6)
+	)
+	RETURNS NVARCHAR(20)
+	AS
+	BEGIN
+		DECLARE @TrangThai NVARCHAR(20);
+
+		SELECT @TrangThai = TRANGTHAI
+		FROM SANPHAM
+		WHERE MASP = @MASP;
+
+		RETURN @TrangThai;
+	END;
+GO
+	SELECT * FROM SANPHAM
+
+	DECLARE @TRANGTHAI NVARCHAR(20)
+	SET @TRANGTHAI = DBO.LayTrangThaiSanPham('SP0001')
+	PRINT @TRANGTHAI
+
+GO
+	-- HÀM 2: LẤY SẢN PHẨM THEO TRẠNG THÁI
+	CREATE FUNCTION LayGiaBanSanPham
+	(
+		@MASP CHAR(6)
+	)
+	RETURNS MONEY
+	AS
+	BEGIN
+		DECLARE @GiaBan MONEY;
+
+		SELECT @GiaBan = GIABAN
+		FROM SANPHAM
+		WHERE MASP = @MASP;
+
+		RETURN @GiaBan;
+	END;
+GO
+	DECLARE @GIABAN NVARCHAR(20)
+	SET @GIABAN = DBO.LayGiaBanSanPham('SP0001')
+	PRINT @GIABAN
+
+GO
+	-- CURSOR 1:
+
+	
+		DECLARE @MASP CHAR(6);
+		DECLARE @TENSP NVARCHAR(50);
+		DECLARE @GIABAN MONEY;
+		DECLARE @TRANGTHAI NVARCHAR(20);
+		DECLARE @SOLUONG INT;
+		SET @SOLUONG = 0;
+		DECLARE cur_sanpham CURSOR FOR
+			SELECT MASP, TENSP, GIABAN, TRANGTHAI
+			FROM SANPHAM
+			WHERE GIABAN > 20000;
+		OPEN cur_sanpham;
+		FETCH NEXT FROM cur_sanpham INTO @MASP, @TENSP, @GIABAN, @TRANGTHAI;
+		WHILE (@@FETCH_STATUS = 0)
+		BEGIN
+			SET @SOLUONG = @SOLUONG + 1;
+			PRINT @SOLUONG
+			FETCH NEXT FROM cur_sanpham INTO @MASP, @TENSP, @GIABAN, @TRANGTHAI;
+		END;
+
+		CLOSE cur_sanpham;
+		DEALLOCATE cur_sanpham;
 
 
+	-- CURSOR 2:
+		-- hàm cursor gọi
+		GO
+		CREATE FUNCTION CalculateTax (@Price DECIMAL(18, 2))
+		RETURNS DECIMAL(18, 2)
+		AS
+		BEGIN
+			DECLARE @Tax DECIMAL(18, 2)
+			SET @Tax = @Price * 0.1  -- Tính thuế 10% của giá
+			RETURN @Tax
+		END
+GO
+		-- thủ tục chứa cursor
+		CREATE PROCEDURE ProcessProductsWithTax
+		AS
+		BEGIN
+			DECLARE @MASP INT, @TENSP NVARCHAR(100), @GIABAN DECIMAL(18, 2), @TRANGTHAI NVARCHAR(50)
+			DECLARE @Tax DECIMAL(18, 2)
+
+			-- Khai báo cursor duyệt qua các sản phẩm
+			DECLARE product_cursor CURSOR FOR
+			SELECT MASP, TENSP, GIABAN, TRANGTHAI
+			FROM SANPHAM
+
+			-- Mở cursor
+			OPEN product_cursor
+			FETCH NEXT FROM product_cursor INTO @MASP, @TENSP, @GIABAN, @TRANGTHAI
+
+			-- Vòng lặp duyệt qua các sản phẩm
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				-- Gọi hàm CalculateTax để tính thuế cho mỗi sản phẩm
+				SET @Tax = dbo.CalculateTax(@GIABAN)
+				
+				-- Xử lý thông tin sản phẩm và thuế (ví dụ: in ra màn hình)
+				PRINT 'Sản phẩm: ' + @TENSP + ', Giá: ' + CAST(@GIABAN AS NVARCHAR(20)) + ', Thuế: ' + CAST(@Tax AS NVARCHAR(20))
+
+				-- Lấy bản ghi tiếp theo
+				FETCH NEXT FROM product_cursor INTO @MASP, @TENSP, @GIABAN, @TRANGTHAI
+			END
+
+			-- Đóng cursor
+			CLOSE product_cursor
+			DEALLOCATE product_cursor
+		END
+
+GO
+	-- TRUY VẤN TƯƠNG QUAN
+	SELECT * FROM SANPHAM
+
+	-- tìm ra sản phẩm có giá bán lớn nhất
+	SELECT MASP, TENSP, GIABAN, TRANGTHAI
+	FROM SANPHAM AS SP1
+	WHERE GIABAN = (
+		SELECT MAX(GIABAN)
+		FROM SANPHAM AS SP2
+		WHERE SP2.TRANGTHAI = 'Còn hàng'
+	);
+
+	GO
+		CREATE PROCEDURE PRO_SANPHAM_GIAMAX
+		AS
+		BEGIN
+			SELECT MASP, TENSP, GIABAN, TRANGTHAI
+			FROM SANPHAM AS SP1
+			WHERE GIABAN = (
+				SELECT MAX(GIABAN)
+				FROM SANPHAM AS SP2
+				WHERE SP2.TRANGTHAI = 'Còn hàng' )
+		END
+	GO
+		EXEC PRO_SANPHAM_GIAMAX
+
+		
+GO
 -- cấp quyền create login từ sa cho tài khoản tạo login son, và cấp quyền cho son có thể gán các quyền cơ bản cho user
 	use QuanLyTraSuaDB2
 	GRANT EXECUTE ON OBJECT::[dbo].[CreateLogin] TO [son];
@@ -1551,6 +1699,8 @@ GO
 		GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertChiTietDonHang TO son WITH GRANT OPTION;
 		GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteChiTietDonHang TO son WITH GRANT OPTION;
 		GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateChiTietDonHang  TO son WITH GRANT OPTION;
+	-- quyền cho sản phẩm
+
 	GRANT SELECT ON Users_ID_Store TO son;
 	GRANT SELECT ON UserSessions TO son;
 	GRANT UPDATE ON UserSessions TO son;
@@ -1610,6 +1760,407 @@ GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_MASP_TU_V_CHITIETDONHANG T
 GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertChiTietDonHang TO son;
 GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteChiTietDonHang TO son;
 GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateChiTietDonHang  TO son;
+
+
+
+/* ('Thêm user mới đăng nhập', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.THEM_USER_MOI_DANGNHAPSQL TO @username'),
+('Lấy User ID', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LAY_USER_ID TO @username'),
+('Kiểm tra đăng nhập', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_CHECK_QUERY_DANGNHAPSQL TO @username'),
+('Thêm đăng nhập', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_INSERT_QUERY_DANGNHAPSQL TO @username'),
+('Cập nhật đăng nhập', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_UPDATE_QUERY_DANGNHAPSQL TO @username'),
+('Cập nhật đăng xuất', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGOUT_UPDATE_QUERY_DANGNHAPSQL TO @username'),
+('Kiểm tra trạng thái đăng nhập', 'GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.IsUserLoggedIn_DANGNHAPSQL TO @username'),
+('Xem danh sách User ID', 'GRANT SELECT ON Users_ID_Store TO @username'),
+('Xem phiên đăng nhập', 'GRANT SELECT ON UserSessions TO @username'),
+('Cập nhật phiên đăng nhập', 'GRANT UPDATE ON UserSessions TO @username'), */
+/* ('Xem danh sách khách hàng', 'GRANT SELECT ON KHACH TO @username'),
+('Xem danh sách đơn hàng', 'GRANT SELECT ON DONHANG TO @username'),
+('Xem chi tiết đơn hàng', 'GRANT SELECT ON CHITIETDONHANG TO @username'),
+('Cập nhật thông tin khách hàng', 'GRANT UPDATE ON KHACH TO @username'),
+('Thêm khách hàng', 'GRANT INSERT ON KHACH TO @username'),
+('Thêm đơn hàng', 'GRANT INSERT ON DONHANG TO @username'),
+('Thêm chi tiết đơn hàng', 'GRANT INSERT ON CHITIETDONHANG TO @username'), */
+
+-- tạo bảng chứa các quyền phục vụ việc phân truyền
+CREATE TABLE QuyenSQL (
+    MaQuyen INT PRIMARY KEY IDENTITY(1,1),
+    MoTa NVARCHAR(200) NOT NULL,         -- Mô tả quyền
+    LenhSQL NVARCHAR(MAX) NOT NULL,    -- Câu lệnh SQL với tham số @username
+	LenhREVOKE NVARCHAR(MAX) NOT NULL  		-- Câu lệnh SQL với tham số @username
+);
+
+/* 
+INSERT INTO QuyenSQL (MoTa, LenhSQL, LenhREVOKE) VALUES 
+(N'Xem bảng khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_BANG_KHACH TO @username'),
+(N'Lấy mã khách từ bảng khách', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.SELECT_MA_KHACH_FROM_KHACH TO @username'),
+(N'Tìm khách hàng qua số điện thoại', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_SODT TO @username'),
+(N'Tìm khách hàng qua tên', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_TENKH TO @username'),
+(N'Tìm khách hàng qua mã khách', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_MAKH TO @username'),
+(N'Tìm đơn hàng của khách', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_DONHANG_TU_MAKHACH TO @username'),
+(N'Cập nhật thông tin khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateKhach TO @username'),
+(N'Xóa khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteKhach TO @username'),
+(N'Thêm khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertKhach TO @username'),
+
+(N'Xem view đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_DONHANG TO @username'),
+(N'Lấy mã đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_TU_DH_DONHANG TO @username'),
+(N'Thêm đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertDonHang TO @username'),
+(N'Xóa đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteDonHang TO @username'),
+(N'Cập nhật đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateDonHang TO @username'),
+
+(N'Xem view chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_CHITIETDONHANG TO @username'),
+(N'Lấy mã đơn hàng và mã sản phẩm từ chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_MASP_TU_V_CHITIETDONHANG TO @username'),
+(N'Thêm chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertChiTietDonHang TO @username'),
+(N'Xóa chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteChiTietDonHang TO @username'),
+(N'Cập nhật chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateChiTietDonHang TO @username');
+ */
+
+ INSERT INTO QuyenSQL (MoTa, LenhSQL, LenhREVOKE) VALUES 
+(N'Xem bảng khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_BANG_KHACH TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_BANG_KHACH FROM @username'),
+(N'Lấy mã khách từ bảng khách', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.SELECT_MA_KHACH_FROM_KHACH TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.SELECT_MA_KHACH_FROM_KHACH FROM @username'),
+(N'Tìm khách hàng qua số điện thoại', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_SODT TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_SODT FROM @username'),
+(N'Tìm khách hàng qua tên', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_TENKH TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_TENKH FROM @username'),
+(N'Tìm khách hàng qua mã khách', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_MAKH TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_KHACHHANG_BANG_MAKH FROM @username'),
+(N'Tìm đơn hàng của khách', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_DONHANG_TU_MAKHACH TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.TIM_DONHANG_TU_MAKHACH FROM @username'),
+(N'Cập nhật thông tin khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateKhach TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateKhach FROM @username'),
+(N'Xóa khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteKhach TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteKhach FROM @username'),
+(N'Thêm khách hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertKhach TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertKhach FROM @username'),
+
+(N'Xem view đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_DONHANG TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_DONHANG FROM @username'),
+(N'Lấy mã đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_TU_DH_DONHANG TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_TU_DH_DONHANG FROM @username'),
+(N'Thêm đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertDonHang TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertDonHang FROM @username'),
+(N'Xóa đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteDonHang TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteDonHang FROM @username'),
+(N'Cập nhật đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateDonHang TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateDonHang FROM @username'),
+
+(N'Xem view chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_CHITIETDONHANG TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.XEM_VIEW_CHITIETDONHANG FROM @username'),
+(N'Lấy mã đơn hàng và mã sản phẩm từ chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_MASP_TU_V_CHITIETDONHANG TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LAY_MADH_MASP_TU_V_CHITIETDONHANG FROM @username'),
+(N'Thêm chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertChiTietDonHang TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.InsertChiTietDonHang FROM @username'),
+(N'Xóa chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteChiTietDonHang TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.DeleteChiTietDonHang FROM @username'),
+(N'Cập nhật chi tiết đơn hàng', 'GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateChiTietDonHang TO @username', 'REVOKE EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.UpdateChiTietDonHang FROM @username');
+
+
+-- alter để thêm cột LENHREVOKE
+/* 	ALTER TABLE QuyenSQL
+	ADD LenhREVOKE NVARCHAR(MAX); */
+
+
+SELECT * from QuyenSQL
+drop TABLE QuyenSQL
+
+SELECT * 
+FROM sys.database_principals
+WHERE type IN ('S', 'U')
+
+SELECT name 
+FROM QuanLyTraSuaDB2.sys.database_principals
+WHERE type IN ('S', 'U') and name LIKE N'%NV%'
+
+SELECT * 
+FROM sys.database_permissions p
+JOIN sys.database_principals r ON p.grantee_principal_id = r.principal_id
+WHERE r.name = 'NV0075';  -- Thay 'User1' bằng tên người dùng cần kiểm tra
+
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = 'QuanLyTraSuaDB2';
+
+
+REVOKE EXECUTE TO NV0074;
+
+EXEC sp_helprotect 'NV0074';
+
+
+-- CÂU LỆNH SELECT XEM THỦ TỤC TRONG BẢNG THEO NGƯỜI DÙNG
+-- CÓ THỂ CHỈ ĐỊNH XEM THỦ TỤC CỦA 1 BẢNG CỤ THỂ
+-- KHI CHỌN 1 BẢNG VÀ NGƯỜI DÙNG TA SẼ BIẾT ĐƯỢC
+	-- NHỮNG THỦ TỤC NÀO ĐÃ ĐƯỢC CẤP 
+SELECT 
+    u.name AS UserName,
+    s.name AS SchemaName,
+    p.name AS ProcedureName,
+    t.name AS TableName
+FROM 
+    sys.procedures p
+JOIN 
+    sys.schemas s ON p.schema_id = s.schema_id
+JOIN 
+    sys.database_permissions perm ON perm.major_id = p.object_id
+JOIN 
+    sys.sysusers u ON u.uid = perm.grantee_principal_id
+JOIN 
+    sys.sql_expression_dependencies dep ON dep.referencing_id = p.object_id
+JOIN 
+    sys.tables t ON t.object_id = dep.referenced_id
+WHERE 
+    perm.permission_name = 'EXECUTE'
+    AND u.name = 'NV0074'
+	/* AND t.name = 'KHACH' */
+	AND t.name NOT IN ('UserSessions', 'Users_ID_Store')
+ORDER BY 
+    UserName, SchemaName, ProcedureName, TableName;
+
+-- 
+-- CÂU LỆNH REVOKE
+REVOKE EXECUTE ON OBJECT::dbo.XEM_BANG_KHACH FROM NV0074
+
+-- CẤP QUYỀN (ĐÃ HOÀN THÀNH)
+	-- CẤP QUYỀN ĐƠN LẺ
+		-- ĐÃ TRIỂN KHAI
+	-- CẤP QUYỀN THEO BẢNG
+		-- DỰA VÀO DỮ LIỆU TRONG BẢNG QUYENSQL, LÚC NÀY CÓ THÊM 1 CỘT REVOKE, 1 CỘT TÊN BẢNG CHỨA NÓ (THÊM TAY)
+		-- LẤY DÒNG NÀO CÓ TÊN BẢNG LÀ TÊN CỦA BẢNG MUỐN CẤP PHÁT NHIỀU (DỮ LIỆU TRẢ VỀ DƯỚI DẠNG BẢNG)
+		-- LẤY BẢNG TRẢ VỀ TỪ TRUY VẤN VÀ TRUYỀN VÀO 1 LIST
+		-- THỰC THI TUẦN TỰ CÁC PHẦN TỬ TRONG LIST
+-- THU HỔI QUYỀN
+	-- THU HỒI QUYỀN ĐƠN LẺ
+		-- XEM CÁC QUYỀN HIỆN CÓ Ở GRIDVIEW
+		-- CHỌN QUYỀN MUỐN THU HỒI TỪ COMBOBOX
+		-- TRUYỀN VALUE LÀ MÃ QUYỀN XUỐNG VÀ NHẬN VỀ LỆNH REVOKE TỪ QUYỀN CÓ MÃ ĐÓ
+		-- THAY ĐỔI THAM SỐ TRONG LỆNH REVOKE
+		-- THỰC THI STRING CÂU LỆNH ĐÃ ĐỔI THAM SỐ
+	-- THU HỒI QUYỀN THEO BẢNG
+		-- DỰA VÀO DỮ LIỆU TRONG BẢNG QUYENSQL, LÚC NÀY CÓ THÊM 1 CỘT REVOKE, 1 CỘT TÊN BẢNG CHỨA NÓ (THÊM TAY)
+		-- LẤY DÒNG NÀO CÓ TÊN BẢNG LÀ TÊN CỦA BẢNG MUỐN CẤP PHÁT NHIỀU (DỮ LIỆU TRẢ VỀ DƯỚI DẠNG BẢNG)
+		-- LẤY BẢNG TRẢ VỀ TỪ TRUY VẤN VÀ TRUYỀN VÀO 1 LIST
+		-- THỰC THI TUẦN TỰ CÁC PHẦN TỬ TRONG LIST
+
+
+-- CẤP QUYỀN CHO NHÓM NGƯỜI DÙNG 
+	-- XEM CÁC ROLE ĐANG CÓ TRONG DB
+		SELECT name AS RoleName
+		FROM sys.database_principals
+		WHERE type = 'R';
+
+	-- TẠO ROLE MỚI
+		CREATE ROLE TenRole;
+
+	-- GÁN QUYỀN CHO ROLE
+		GRANT SELECT ON dbo.TenBang TO TenRole;
+		GRANT EXECUTE ON OBJECT::dbo.TenThuTuc TO TenRole;
+
+	-- THÊM NGƯỜI DÙNG VÀO ROLE
+		ALTER ROLE TenRole ADD MEMBER NV0074;
+
+	-- THU HỒI QUYỀN TỪ ROLE
+		REVOKE SELECT ON dbo.TenBang FROM TenRole;
+
+	-- GỠ NGƯỜI DÙNG RA KHỎI ROLE
+		ALTER ROLE TenRole DROP MEMBER NV0074;
+
+	-- XEM NHỮNG NGƯỜI DÙNG TRONG ROLE
+		SELECT 
+			dp1.name AS RoleName,
+			dp2.name AS UserName
+		FROM 
+			sys.database_role_members AS drm
+		JOIN 
+			sys.database_principals AS dp1 ON dp1.principal_id = drm.role_principal_id
+		JOIN 
+			sys.database_principals AS dp2 ON dp2.principal_id = drm.member_principal_id
+		WHERE 
+			dp1.type = 'R' -- Role
+			AND dp1.name = 'NhanVien'; -- Thay 'TenRole' bằng tên role bạn muốn xem
+
+	-- XEM NHỮNG QUYỀN MÀ ROLE ĐANG CÓ
+		SELECT dp.name AS RoleName,
+			dp.type_desc AS RoleType,
+			p.permission_name AS Permission,
+			p.state_desc AS State
+		FROM sys.database_principals AS dp
+		JOIN sys.database_permissions AS p ON dp.principal_id = p.grantee_principal_id
+		WHERE dp.name = 'NhanVien';
+
+	-- xem ver2
+		SELECT 
+			dp.name AS RoleName,
+			dp.type_desc AS RoleType,
+			o.name AS ObjectName,
+			o.type_desc AS ObjectType,
+			p.permission_name AS PermissionName,
+			p.state_desc AS PermissionState
+		FROM 
+			sys.database_principals AS dp
+		JOIN 
+			sys.database_permissions AS p ON dp.principal_id = p.grantee_principal_id
+		LEFT JOIN 
+			sys.objects AS o ON p.major_id = o.object_id
+		WHERE 
+			dp.name = 'NhanVien';
+
+-- thủ tục cho form phân quyền
+GO
+CREATE PROCEDURE sp_GetQuyenSQL
+AS
+BEGIN
+    SELECT MaQuyen, MoTa
+    FROM QuyenSQL;
+END
+GO
+EXEC sp_GetQuyenSQL;
+GO
+CREATE PROCEDURE sp_GetDatabasePrincipals
+AS
+BEGIN
+    SELECT name
+    FROM QuanLyTraSuaDB2.sys.database_principals
+    WHERE type IN ('S', 'U') AND name LIKE N'%NV%';
+END
+GO
+EXEC sp_GetDatabasePrincipals;
+GO
+CREATE PROCEDURE sp_GetRoleNames
+AS
+BEGIN
+    SELECT name AS RoleName
+    FROM sys.database_principals
+    WHERE type = 'R';
+END
+GO
+EXEC sp_GetRoleNames;
+GO
+CREATE PROCEDURE sp_GetLenhSQLByMaQuyen
+    @MaQuyen INT
+AS
+BEGIN
+    SELECT LenhSQL
+    FROM QuyenSQL
+    WHERE MaQuyen = @MaQuyen;
+END
+GO
+DECLARE @MaQuyen INT;
+SET @MaQuyen = 1;
+EXEC sp_GetLenhSQLByMaQuyen @MaQuyen
+GO
+CREATE PROCEDURE sp_GetLenhREVOKEByMaQuyen
+    @MaQuyen INT
+AS
+BEGIN
+    SELECT LenhREVOKE
+    FROM QuyenSQL
+    WHERE MaQuyen = @MaQuyen;
+END
+GO
+DECLARE @MaQuyen INT;
+SET @MaQuyen = 1; -- Thay giá trị 1 bằng giá trị bạn muốn tìm
+EXEC sp_GetLenhREVOKEByMaQuyen @MaQuyen;
+GO
+CREATE PROCEDURE sp_GetUserPermissions
+    @user NVARCHAR(128)
+AS
+BEGIN
+    SELECT u.name AS UserName, s.name AS SchemaName, p.name AS ProcedureName, t.name AS TableName
+    FROM sys.procedures p
+    JOIN sys.schemas s ON p.schema_id = s.schema_id
+    JOIN sys.database_permissions perm ON perm.major_id = p.object_id
+    JOIN sys.sysusers u ON u.uid = perm.grantee_principal_id
+    JOIN sys.sql_expression_dependencies dep ON dep.referencing_id = p.object_id
+    JOIN sys.tables t ON t.object_id = dep.referenced_id
+    WHERE perm.permission_name = 'EXECUTE'
+      AND u.name = @user
+      AND t.name NOT IN ('UserSessions', 'Users_ID_Store')
+    ORDER BY UserName, SchemaName, ProcedureName, TableName;
+END
+GO
+DECLARE @user NVARCHAR(128);
+SET @user = N'NV0074'; -- Thay 'ten_nguoi_dung' bằng tên người dùng thực tế
+EXEC sp_GetUserPermissions @user;
+GO
+CREATE PROCEDURE sp_GetRolePermissions
+    @rolename NVARCHAR(128)
+AS
+BEGIN
+    SELECT 
+        dp.name AS RoleName,
+        dp.type_desc AS RoleType,
+        o.name AS ObjectName,
+        o.type_desc AS ObjectType,
+        p.permission_name AS PermissionName,
+        p.state_desc AS PermissionState
+    FROM 
+        sys.database_principals AS dp
+    JOIN 
+        sys.database_permissions AS p ON dp.principal_id = p.grantee_principal_id
+    LEFT JOIN 
+        sys.objects AS o ON p.major_id = o.object_id
+    WHERE 
+        dp.name = @rolename;
+END
+GO
+DECLARE @rolename NVARCHAR(128);
+SET @rolename = N'NHANVIEN'; -- Thay 'RoleName' bằng tên vai trò thực tế
+EXEC sp_GetRolePermissions @rolename;
+GO
+CREATE PROCEDURE sp_GetUsersByRole
+    @rolename NVARCHAR(128)
+AS
+BEGIN
+    SELECT 
+        dp1.name AS RoleName, 
+        dp2.name AS UserName 
+    FROM  
+        sys.database_role_members AS drm 
+    JOIN  
+        sys.database_principals AS dp1 ON dp1.principal_id = drm.role_principal_id 
+    JOIN  
+        sys.database_principals AS dp2 ON dp2.principal_id = drm.member_principal_id 
+    WHERE  
+        dp1.type = 'R' 
+        AND dp1.name = @rolename;
+END
+GO
+DECLARE @rolename NVARCHAR(128);
+SET @rolename = N'NHANVIEN'; -- Thay 'RoleName' bằng tên vai trò thực tế
+EXEC sp_GetUsersByRole @rolename;
+GO
+CREATE PROCEDURE sp_CreateRole
+    @rolename NVARCHAR(128)
+AS
+BEGIN
+    DECLARE @sql NVARCHAR(MAX);
+    SET @sql = N'CREATE ROLE ' + QUOTENAME(@rolename);
+    EXEC sp_executesql @sql;
+END
+GO
+DECLARE @rolename NVARCHAR(128);
+SET @rolename = N'NHANVIEN1'; -- Thay 'TenVaiTro' bằng tên vai trò thực tế
+EXEC sp_CreateRole @rolename;
+GO
+CREATE PROCEDURE sp_AddMemberToRole
+    @rolename NVARCHAR(128),
+    @username NVARCHAR(128)
+AS
+BEGIN
+    DECLARE @sql NVARCHAR(MAX);
+    SET @sql = N'ALTER ROLE ' + QUOTENAME(@rolename) + ' ADD MEMBER ' + QUOTENAME(@username);
+    EXEC sp_executesql @sql;
+END
+GO
+DECLARE @rolename NVARCHAR(128);
+DECLARE @username NVARCHAR(128);
+SET @rolename = N'NHANVIEN1'; -- Thay 'TenVaiTro' bằng tên vai trò thực tế
+SET @username = N'NV0074'; -- Thay 'TenNguoiDung' bằng tên người dùng thực tế
+EXEC sp_AddMemberToRole @rolename, @username;
+GO
+CREATE PROCEDURE sp_RemoveMemberFromRole
+    @rolename NVARCHAR(128),
+    @username NVARCHAR(128)
+AS
+BEGIN
+    DECLARE @sql NVARCHAR(MAX);
+    SET @sql = N'ALTER ROLE ' + QUOTENAME(@rolename) + ' DROP MEMBER ' + QUOTENAME(@username);
+    EXEC sp_executesql @sql;
+END
+GO
+DECLARE @rolename NVARCHAR(128);
+DECLARE @username NVARCHAR(128);
+SET @rolename = N'NHANVIEN1'; -- Thay 'TenVaiTro' bằng tên vai trò thực tế
+SET @username = N'NV0074'; -- Thay 'TenNguoiDung' bằng tên người dùng thực tế
+EXEC sp_RemoveMemberFromRole @rolename, @username;
+GO
+-- END PHẦN THỦ TỤC CHO PHÂN QUYỀN
+
+
+
+
+
+
 
 
 

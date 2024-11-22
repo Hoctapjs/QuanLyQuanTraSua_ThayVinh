@@ -135,7 +135,7 @@
             this.btn_submit_export.TabIndex = 5;
             this.btn_submit_export.Text = "Export";
             this.btn_submit_export.UseVisualStyleBackColor = false;
-            this.btn_submit_export.Click += new System.EventHandler(this.btn_submit_export_Click_1);
+            this.btn_submit_export.Click += new System.EventHandler(this.btn_submit_export_Click);
             // 
             // cbo_danhsach_table
             // 

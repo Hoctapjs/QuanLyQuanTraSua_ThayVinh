@@ -127,6 +127,7 @@ namespace UngDung
             btn_nhanvien.Visible = false;
             btn_congthuc.Visible = false;
             btn_nguyenlieu.Visible = false;
+            btn_phanquyen.Visible = false;
             lbl_username.Text = username;
             if (username == "sa")
             {
@@ -139,6 +140,7 @@ namespace UngDung
                 btn_nhanvien.Visible = true;
                 btn_congthuc.Visible = true;
                 btn_nguyenlieu.Visible = true;
+                btn_phanquyen.Visible = true;
             }
 
             userid = GetUserID(username, connect);
@@ -628,6 +630,29 @@ namespace UngDung
         private void Home_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_phanquyen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connect))
+                {
+                    connection.Open();
+                    MessageBox.Show("Bắt đầu thao tác với Phân Quyền!");
+                    Home ho = this;
+                    ho.Hide();
+                    PhanQuyen pq = new PhanQuyen();
+                    pq.connect = connect;
+                    pq.username = username;
+                    pq.ShowDialog();
+                    ho.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Lỗi đăng nhập");
+            }
         }
     }
 }

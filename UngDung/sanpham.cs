@@ -88,6 +88,12 @@ namespace UngDung
 
         private void btn_them_Click(object sender, EventArgs e)
         {
+            // phương thức thêm sản phẩm
+
+            // kiểm tra hàng đã tồn tại chưa bằng cách kiểm tra trong rowlist
+
+            // row list sẽ được lấy từ cơ sở dữ liệu mỗi khi form được load hay xong 1 chức năng thay đổi db
+
             string masp = txt_sanpham_ma.Text;
             string tensp = txt_sanpham_ten.Text;
             string giatien = txt_sanpham_giatien.Text;
@@ -109,6 +115,7 @@ namespace UngDung
 
             using (SqlConnection connection = new SqlConnection(connect))
             {
+                // gọi thủ tục chứa câu lệnh insert
                 try
                 {
                     connection.Open();
@@ -129,6 +136,8 @@ namespace UngDung
                 }
             }
 
+            // load lại datagridview mỗi khi thêm thành công
+
             using (SqlConnection connection = new SqlConnection(connect))
             {
                 try
@@ -148,6 +157,8 @@ namespace UngDung
                     return;
                 }
             }
+
+            // làm mới các textbox nhập liệu
             txt_sanpham_ma.Clear();
             txt_sanpham_ten.Clear();
             txt_sanpham_giatien.Clear();
@@ -185,6 +196,8 @@ namespace UngDung
             //    }
             //}
 
+            // gọi thủ tục chứa lệnh xóa
+
             using (SqlConnection connection = new SqlConnection(connect))
             {
                 try
@@ -201,6 +214,8 @@ namespace UngDung
                     MessageBox.Show($"Lỗi {ex}");
                 }
             }
+
+            // gọi thủ tục load lại datagridview
 
             using (SqlConnection connection = new SqlConnection(connect))
             {
@@ -221,6 +236,8 @@ namespace UngDung
                     return;
                 }
             }
+
+            // xóa trong list
             
             foreach (var row in rowsList)
             {
@@ -256,6 +273,8 @@ namespace UngDung
             //    return;
             //}
 
+           // gọi thủ tục chứa câu lệnh update
+
             using (SqlConnection connection = new SqlConnection(connect))
             {
                 try
@@ -271,7 +290,7 @@ namespace UngDung
                         cmd.Parameters.AddWithValue("@trangthai", trangthai);
                         cmd.Parameters.AddWithValue("@masp_sua", masp_sua);
 
-                        // Execute the query
+                        // thực thi câu lệnh và thông báo kết quả
                         int rowsAffected = cmd.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {
@@ -291,6 +310,7 @@ namespace UngDung
                 }
             }
 
+            // gọi thủ tục làm mới datagridview
 
             using (SqlConnection connection = new SqlConnection(connect))
             {
@@ -530,12 +550,124 @@ namespace UngDung
         {
             using (SqlConnection connection = new SqlConnection(connect))
             {
+                // phương thức dùng truy vấn lồng, truy vấn lồng được gọi từ thủ tục
+
                 try
                 {
                     connection.Open();
                     string query = "SelectSanPhamNotInChiTietDonHang";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu: Bạn không có quyền hạn lấy dữ liệu");
+                    return;
+                }
+            }
+        }
+
+        private void btn_laytrangthaisp_Click(object sender, EventArgs e)
+        {
+            // gọi hàm truyền vào mã sản phẩm và nhận về trạng thái của sản phẩm đó
+            string masp = txt_sanpham_ma.Text;
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                string query = "SELECT dbo.LayTrangThaiSanPham(@MASP) AS TrangThai";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MASP", masp);
+
+                connection.Open();
+                string result = command.ExecuteScalar().ToString();
+                if (string.IsNullOrEmpty(result))
+                {
+                    MessageBox.Show("Không Tìm Thấy");
+                }
+                else
+                {
+                    MessageBox.Show($"Trạng thái của sản phẩm {masp} là: " + result);
+                }
+            }
+        }
+
+        private void btn_laygiabansp_Click(object sender, EventArgs e)
+        {
+            // gọi hàm truyền vào mã sản phẩm và nhận về giá bán của sản phẩm đó
+            string masp = txt_sanpham_ma.Text;
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                string query = "SELECT dbo.LayGiaBanSanPham(@MASP) AS GiaBan";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@MASP", masp);
+
+                connection.Open();
+                var result = command.ExecuteScalar().ToString();
+                if (string.IsNullOrEmpty(result))
+                {
+                    MessageBox.Show("Không Tìm Thấy");
+                }
+                else
+                {
+                    MessageBox.Show($"Giá bản của sản phẩm {masp} là: " + result);
+                }
+            }
+        }
+
+        private void btn_thoat_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_sanpham_tim_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sanpham_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_sanpham_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_them_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_xoa_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_sua_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_mon_chuadathang_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // hàm dùng thủ tục chứa truy vấn lồng tương quan
+            using (SqlConnection connection = new SqlConnection(connect))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "EXEC PRO_SANPHAM_GIAMAX";
+                    SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);

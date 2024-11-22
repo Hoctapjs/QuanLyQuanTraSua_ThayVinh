@@ -49,6 +49,7 @@
             this.lbl_username = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btn_DangXuat = new System.Windows.Forms.Button();
+            this.btn_phanquyen = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -81,6 +82,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btn_capnhat_view);
             this.flowLayoutPanel1.Controls.Add(this.btn_congthuc);
             this.flowLayoutPanel1.Controls.Add(this.btn_nguyenlieu);
+            this.flowLayoutPanel1.Controls.Add(this.btn_phanquyen);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(37, 124);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(487, 750);
@@ -328,6 +330,19 @@
             this.btn_DangXuat.UseVisualStyleBackColor = false;
             this.btn_DangXuat.Click += new System.EventHandler(this.btn_DangXuat_Click);
             // 
+            // btn_phanquyen
+            // 
+            this.btn_phanquyen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(187)))), ((int)(((byte)(146)))));
+            this.btn_phanquyen.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_phanquyen.ForeColor = System.Drawing.Color.White;
+            this.btn_phanquyen.Location = new System.Drawing.Point(3, 345);
+            this.btn_phanquyen.Name = "btn_phanquyen";
+            this.btn_phanquyen.Size = new System.Drawing.Size(234, 51);
+            this.btn_phanquyen.TabIndex = 21;
+            this.btn_phanquyen.Text = "Phân Quyền";
+            this.btn_phanquyen.UseVisualStyleBackColor = false;
+            this.btn_phanquyen.Click += new System.EventHandler(this.btn_phanquyen_Click);
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -372,5 +387,6 @@
         private Button btn_DangXuat;
         private Button btn_congthuc;
         private Button btn_nguyenlieu;
+        private Button btn_phanquyen;
     }
 }
