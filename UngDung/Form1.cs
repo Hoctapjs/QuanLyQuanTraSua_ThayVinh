@@ -91,6 +91,14 @@ namespace UngDung
             $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGIN_UPDATE_QUERY_DANGNHAPSQL TO [{username}]",
             $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.LOGOUT_UPDATE_QUERY_DANGNHAPSQL TO [{username}]",
             $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.IsUserLoggedIn_DANGNHAPSQL TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.sp_GetUserIDByUsername TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.sp_UpdateUserSessionStatus TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.sp_GetAllUserSessions TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.sp_GetIsLoggedInByUserID TO [{username}]",
+            $"GRANT EXECUTE ON QuanLyTraSuaDB2.dbo.sp_GetAllUsersIDStore TO [{username}]",
+
+
+
             $"GRANT SELECT ON Users_ID_Store TO [{username}]",
             $"GRANT SELECT ON UserSessions TO [{username}]",
             $"GRANT UPDATE ON UserSessions TO [{username}]",

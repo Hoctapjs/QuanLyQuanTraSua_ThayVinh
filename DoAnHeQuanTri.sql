@@ -1043,6 +1043,11 @@ GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LOGIN_INSERT_QUERY_DANGNHAPSQL TO s
 GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LOGIN_UPDATE_QUERY_DANGNHAPSQL TO son WITH GRANT OPTION;
 GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.LOGOUT_UPDATE_QUERY_DANGNHAPSQL TO son WITH GRANT OPTION;
 GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.IsUserLoggedIn_DANGNHAPSQL TO son WITH GRANT OPTION;
+GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.sp_GetUserIDByUsername TO son WITH GRANT OPTION;
+GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.sp_UpdateUserSessionStatus TO son WITH GRANT OPTION;
+GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.sp_GetAllUserSessions TO son WITH GRANT OPTION;
+GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.sp_GetIsLoggedInByUserID TO son WITH GRANT OPTION;
+GRANT EXECUTE ON OBJECT::QuanLyTraSuaDB2.dbo.sp_GetAllUsersIDStore TO son WITH GRANT OPTION;
 GRANT SELECT ON Users_ID_Store TO son;
 GRANT SELECT ON UserSessions TO son;
 GRANT UPDATE ON UserSessions TO son;
@@ -2156,6 +2161,67 @@ EXEC sp_RemoveMemberFromRole @rolename, @username;
 GO
 -- END PHẦN THỦ TỤC CHO PHÂN QUYỀN
 
+-- thủ tục bổ sung cho home
+GO
+CREATE PROCEDURE sp_GetUserIDByUsername
+    @Username NVARCHAR(128)
+AS
+BEGIN
+    SELECT UserID
+    FROM Users_ID_Store
+    WHERE Username = @Username;
+END
+GO
+DECLARE @Username NVARCHAR(128);
+SET @Username = N'NV0074'; -- Thay 'TenNguoiDung' bằng tên người dùng thực tế
+EXEC sp_GetUserIDByUsername @Username;
+GO
+CREATE PROCEDURE sp_UpdateUserSessionStatus
+    @IsLoggedIn BIT,
+    @UserID INT
+AS
+BEGIN
+    UPDATE UserSessions
+    SET IsLoggedIn = @IsLoggedIn
+    WHERE UserID = @UserID;
+END
+GO
+DECLARE @IsLoggedIn BIT;
+DECLARE @UserID INT;
+SET @IsLoggedIn = 1; -- Thay 1 bằng giá trị mong muốn của bạn
+SET @UserID = 200; -- Thay 123 bằng ID người dùng thực tế
+EXEC sp_UpdateUserSessionStatus @IsLoggedIn, @UserID;
+GO
+CREATE PROCEDURE sp_GetAllUserSessions
+AS
+BEGIN
+    SELECT *
+    FROM UserSessions;
+END
+GO
+EXEC sp_GetAllUserSessions;
+GO
+CREATE PROCEDURE sp_GetIsLoggedInByUserID
+    @UserID INT
+AS
+BEGIN
+    SELECT IsLoggedIn
+    FROM UserSessions
+    WHERE UserID = @UserID;
+END
+GO
+DECLARE @UserID INT;
+SET @UserID = 123; -- Thay 123 bằng ID người dùng thực tế
+EXEC sp_GetIsLoggedInByUserID @UserID;
+GO
+CREATE PROCEDURE sp_GetAllUsersIDStore
+AS
+BEGIN
+    SELECT *
+    FROM Users_ID_Store;
+END
+GO
+EXEC sp_GetAllUsersIDStore;
 
 
 

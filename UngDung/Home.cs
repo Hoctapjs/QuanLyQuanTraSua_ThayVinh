@@ -101,20 +101,20 @@ namespace UngDung
             }
         }
 
-        private void Xoatatca_id_sessions(string userId, string connectionString1)
-        {
-            string connectionString = connectionString1;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string query = "use QuanLyTraSuaDB2; delete from Users_ID_Store; delete from UserSessions";
+        //private void Xoatatca_id_sessions(string userId, string connectionString1)
+        //{
+        //    string connectionString = connectionString1;
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+        //        string query = "use QuanLyTraSuaDB2; delete from Users_ID_Store; delete from UserSessions";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.ExecuteNonQuery(); // Thực hiện lệnh SQL
-                }
-            }
-        }
+        //        using (SqlCommand command = new SqlCommand(query, connection))
+        //        {
+        //            command.ExecuteNonQuery(); // Thực hiện lệnh SQL
+        //        }
+        //    }
+        //}
 
         private void Home_Load(object sender, EventArgs e)
         {
@@ -311,7 +311,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "SELECT UserID FROM Users_ID_Store WHERE Username = @Username";
+                string query = "EXEC sp_GetUserIDByUsername @Username;";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
@@ -327,7 +327,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string query = "UPDATE UserSessions SET IsLoggedIn = @IsLoggedIn WHERE UserID = @UserID";
+                string query = "EXEC sp_UpdateUserSessionStatus @IsLoggedIn, @UserID;";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@IsLoggedIn", false);
@@ -341,7 +341,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM UserSessions";
+                    string query = "EXEC sp_GetAllUserSessions;";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -366,7 +366,7 @@ namespace UngDung
             using (SqlConnection connection = new SqlConnection(connectionString1))
             {
                 await connection.OpenAsync();
-                string query = "SELECT IsLoggedIn FROM UserSessions WHERE UserID = @UserID";
+                string query = "EXEC sp_GetIsLoggedInByUserID @UserID;";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@UserID", userId);
@@ -475,7 +475,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM Users_ID_Store";
+                    string query = "EXEC sp_GetAllUsersIDStore;";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -497,7 +497,7 @@ namespace UngDung
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM UserSessions";
+                    string query = "EXEC sp_GetAllUserSessions;";
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
